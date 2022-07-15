@@ -120,11 +120,11 @@ export default {
   height: calc(var(--vh, 1vh) * 100) !important;
 }
 
-.v-application--is-ltr .v-list-item__action:first-child, .v-application--is-ltr .v-list-item__icon:first-child {
+.v-navigation-drawer--mini-variant .v-list-item__icon {
     margin-right: 0px;
 }
 
-.v-application--is-ltr .v-list-item__avatar:first-child {
+.v-navigation-drawer--mini-variant .v-list-item__avatar {
     margin-right: 0px;
 }
 </style>
