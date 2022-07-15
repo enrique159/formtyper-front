@@ -1,7 +1,6 @@
 :root {
   /*COLORS*/
   /* Hex color mode */
-  // INDDOR COLORS
   --color-primary: #8915ef;
 
   // COLORES DE SISTEMA
@@ -100,7 +99,7 @@ ul {
 }
 
 a {
-  color: currentColor;
+  color: currentColor !important;
   text-decoration: none;
   transition: var(--transition-rapida);
   &:hover{

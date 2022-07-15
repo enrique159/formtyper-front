@@ -3,11 +3,11 @@
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <v-img src="@/assets/img/profile_default.jpeg"></v-img>
+          <v-img src="@/assets/img/profile_image.jpg"></v-img>
         </v-list-item-avatar>
         <v-list-item-content class="py-0" style="height: fit-content !important;">
-          <v-list-item-title class="ts-normal"> Sandra Adams </v-list-item-title>
-          <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
+          <v-list-item-title class="ts-normal">{{ getUser.name }} {{ getUser.lastname}}</v-list-item-title>
+          <v-list-item-subtitle>{{ getUser.email }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -15,13 +15,13 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item link>
+      <v-list-item @click="openView('dashboard')">
         <v-list-item-icon>
           <v-icon>mdi-home</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Inicio</v-list-item-title>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item @click="openView('affiliates')">
         <v-list-item-icon>
           <v-icon>mdi-folder</v-icon>
         </v-list-item-icon>
@@ -67,8 +67,8 @@
     <template v-slot:append>
       <div class="pb-4">
         <v-list nav dense>
-          <v-list-item link>
-            <v-list-item-icon @click="logoutUser()">
+          <v-list-item link @click="logoutUser()">
+            <v-list-item-icon>
               <v-icon>mdi-location-exit</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Cerrar sesión</v-list-item-title>
@@ -82,6 +82,7 @@
 
 <script>
 import store from '@/store';
+import { logoutUser } from '@/auth/index';
 export default {
   name: "NavigationDrawerComp",
   data() {
@@ -101,6 +102,7 @@ export default {
     openView(route) {
       this.$router.push(`/${route}`);
     },
+
     logoutUser() {
       logoutUser();
       this.$router.push("/login");

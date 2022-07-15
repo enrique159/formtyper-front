@@ -38,4 +38,8 @@ export default {
 .v-application--wrap {
   min-height: calc(var(--vh, 1vh) * 100) !important;
 }
+
+.v-list-item__icon > .v-icon {
+    color: rgba(0, 0, 0, 1) !important;
+}
 </style>

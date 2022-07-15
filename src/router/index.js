@@ -23,23 +23,23 @@ const routes = [
           requiresAuth: true,
         },
       },
-      // {
-      //   path: "/affiliates",
-      //   name: "affiliates",
-      //   component: () => import("@/views/main_views/AffiliatesView.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/affiliates/new",
-      //   name: "affiliate-new",
-      //   component: () =>
-      //     import("@/views/affiliates_view/AffiliatesCreateView.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
+      {
+        path: "/affiliates",
+        name: "affiliates",
+        component: () => import("@/views/main_views/AffiliatesView.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/affiliates/new",
+        name: "affiliate-new",
+        component: () =>
+          import("@/views/affiliates_view/AffiliatesCreateView.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {
@@ -58,17 +58,17 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach(async (to, from, next) => {
-//   if (to.name == "login" && isLoggedIn()) {
-//     next({ path: "/" });
-//   } else if (to.meta.requiresAuth && !isLoggedIn()) {
-//     next({
-//       path: "/login",
-//       query: { redirect: to.fullPath },
-//     });
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach(async (to, from, next) => {
+  if (to.name == "login" && isLoggedIn()) {
+    next({ path: "/" });
+  } else if (to.meta.requiresAuth && !isLoggedIn()) {
+    next({
+      path: "/login",
+      query: { redirect: to.fullPath },
+    });
+  } else {
+    next();
+  }
+});
 
 export default router;

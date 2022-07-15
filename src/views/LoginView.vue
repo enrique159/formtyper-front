@@ -37,6 +37,7 @@
               v-model="rememberSession"
               label="Recordar inicio de sesión"
               color="#8915ef"
+              inset
               hide-details
               class="pb-5"
               :disabled="loading"
