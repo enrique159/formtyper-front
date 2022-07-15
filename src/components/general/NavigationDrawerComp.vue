@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent mini-variant-width="58" expand-on-hover width="240" absolute>
+  <v-navigation-drawer :permanent="desktop" v-model="show" mini-variant-width="58" expand-on-hover width="240" absolute>
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar>
@@ -76,7 +76,6 @@
         </v-list>
       </div>
     </template>
-
   </v-navigation-drawer>
 </template>
 
@@ -88,6 +87,7 @@ export default {
   data() {
     return {
       desktop: false,
+      show: false,
     }
   },
   computed: {

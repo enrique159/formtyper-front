@@ -1,7 +1,17 @@
 <template>
   <div class="home-view">
-    <NavigationDrawerComp />
-    <div class="mobile-space d-flex d-lg-none"></div>
+    <NavigationDrawerComp ref="NavigationDrawer" />
+    <v-btn 
+      @click="showNavigationDrawer()"
+      outlined 
+      absolute 
+      icon 
+      top 
+      right 
+      class="d-flex d-sm-none"
+    >
+      <v-icon>mdi-menu</v-icon>
+    </v-btn>
     <router-view />
   </div>
 </template>
@@ -12,6 +22,11 @@ import { logoutUser } from "@/auth/index";
 import store from '@/store';
 export default {
   name: 'Home',
+  data() {
+    return {
+      showNavigation: false
+    }
+  },
   components: {
     NavigationDrawerComp,
   },
@@ -27,19 +42,20 @@ export default {
       logoutUser();
     }, false)
   },
+  methods: {
+    showNavigationDrawer() {
+      this.$refs.NavigationDrawer.show = !this.$refs.NavigationDrawer.show;
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .home-view {
   width: 100%;
-  height: fit-content;
-  min-height: calc(var(--vh, 1vh) * 100);
+  height: calc(var(--vh, 1vh) * 100);
+  max-height: calc(var(--vh, 1vh) * 100);
   background-color: var(--color-background);
   display: flex;
-}
-.mobile-space {
-  width: 58px;
-  height: calc(var(--vh, 1vh) * 100);
 }
 </style>

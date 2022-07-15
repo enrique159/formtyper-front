@@ -1,81 +1,60 @@
 <template>
-  <div>
-    <div class="login-view">
-      <div class="left-section">
-        <div class="d-flex w-100">
-          <span class="ts-h1 tc-primary" style="line-height: 0.9;">•</span>
-          <h4 class="tw-medium ts-h3"><span class="tw-black">Form</span>Typer</h4>
-        </div>
-        <div class="login-card d-flex flex-column">
-          <h4 class="ts-h2 tw-bold mb-2">Bienvenido de vuelta</h4>
-          <p class="ts-small tc-text-light mb-4">Para entrar escribe tus credenciales de usuario</p>
-          <v-form class="login-form" ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-              label="E-mail"
-              v-model="email"
-              :rules="emailRules"
-              outlined
-              dense
-              :disabled="loading"
-              required
-              @keydown.enter="validate"
-            ></v-text-field>
-
-            <v-text-field
-              label="Contraseña"
-              v-model="password"
-              :rules="passwordRules"
-              type="password"
-              outlined
-              dense
-              :disabled="loading"
-              required
-              @keydown.enter="validate"
-            ></v-text-field>
-
-            <v-switch
-              v-model="rememberSession"
-              label="Recordar inicio de sesión"
-              color="#8915ef"
-              inset
-              hide-details
-              class="pb-5"
-              :disabled="loading"
-            ></v-switch>
-
-            <v-btn class="mr-4 btn-login" @click="validate" :loading="loading" :disabled="loading">
-              Ingresar
-            </v-btn>
-            <p class="ts-small text-center mt-4">¿Olvidaste tu contraseña? <router-link to='/forgotpass' class="tc-primary">Haz click aquí</router-link></p>
-          </v-form>
-        </div>
-        <div class="d-flex w-100">
-          <span class="tw-medium tc-text-light ts-smaller">Ⓒ codera - 2022</span>
-        </div>
+  <div class="login-view">
+    <div class="left-section">
+      <div class="d-flex w-100">
+        <span class="ts-h1 tc-primary" style="line-height: 0.9;">•</span>
+        <h4 class="tw-medium ts-h3"><span class="tw-black">Form</span>Typer</h4>
       </div>
-      <div class="right-section d-none d-sm-flex">
-        <img src="@/assets/img/login-image.svg" />
+      <div class="login-card d-flex flex-column">
+        <h4 class="ts-h2 tw-bold mb-2">Bienvenido de vuelta</h4>
+        <p class="ts-small tc-text-light mb-4">Para entrar escribe tus credenciales de usuario</p>
+        <v-form class="login-form" ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            label="E-mail"
+            v-model="email"
+            :rules="emailRules"
+            outlined
+            dense
+            :disabled="loading"
+            required
+            @keydown.enter="validate"
+          ></v-text-field>
+
+          <v-text-field
+            label="Contraseña"
+            v-model="password"
+            :rules="passwordRules"
+            type="password"
+            outlined
+            dense
+            :disabled="loading"
+            required
+            @keydown.enter="validate"
+          ></v-text-field>
+
+          <v-switch
+            v-model="rememberSession"
+            label="Recordar inicio de sesión"
+            color="#8915ef"
+            inset
+            hide-details
+            class="pb-5"
+            :disabled="loading"
+          ></v-switch>
+
+          <v-btn class="mr-4 btn-login" @click="validate" :loading="loading" :disabled="loading">
+            Ingresar
+          </v-btn>
+          <p class="ts-small text-center mt-4">¿Olvidaste tu contraseña? <router-link to='/forgotpass' class="tc-primary">Haz click aquí</router-link></p>
+        </v-form>
+      </div>
+      <div class="d-flex w-100">
+        <span class="tw-medium tc-text-light ts-smaller">Ⓒ codera - 2022</span>
       </div>
     </div>
-
-
-    <!-- SNACKBAR -->
-    <v-snackbar
-      v-model="snackbar"
-      timeout="4000"
-    >
-      {{ errorText }}
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="red"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Cerrar
-        </v-btn>
-      </template>
-    </v-snackbar>
+    <div class="right-section d-none d-sm-flex">
+      <img src="@/assets/img/login-image.svg" />
+    </div>
   </div>
 </template>
 
@@ -126,26 +105,21 @@ export default {
           this.$router.push('/dashboard');
         } else {
           if(response.status == 400 || response.status == 401){
-            this.errorText = 'No se ha encontrado un usuario con esas credenciales';
-            this.snackbar = true;
+            this.showSnackbar('No se ha encontrado un usuario con esas credenciales', 'red');
           } 
           else if(response.status == 500) {
             if(response.data.error == 'incorrectPassword') {
-              this.errorText = 'La contraseña es incorrecta';
-              this.snackbar = true;
+              this.showSnackbar('La contraseña es incorrecta', 'red');
             } else if(response.data.error == 'internalError') {
-              this.errorText = 'Ocurrió un error en el servidor';
-              this.snackbar = true;
+              this.showSnackbar('Ocurrió un error en el servidor', 'red');
             }
           }
           else {
-            this.errorText = 'Ocurrió un error en el servidor';
-            this.snackbar = true;
+            this.showSnackbar('Ocurrió un error en el servidor', 'red');
           }
         }
       } else {
-        this.errorText = 'No hay conexión con el servidor';
-        this.snackbar = true;
+        this.showSnackbar('No hay conexión con el servidor', 'red');
       };
       this.loading = false;
     },
@@ -155,6 +129,11 @@ export default {
       setAuthToken(user.data.token);
       setUser(user.data.user);
       setRememberSesion(this.rememberSession);
+    },
+
+    // SHOW SNACKBAR
+    showSnackbar(text, color) {
+      store.dispatch('setSnackbar', { show: true, text: text, color: color, timeout: 4000,})
     },
   }
 }

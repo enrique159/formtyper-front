@@ -14,11 +14,13 @@ export default new Vuex.Store({
     token: null,
     user: {},
     rememberSesion: false,
+    snackbar: { show: false, text: '', color: 'success', timeout: 4000 },
   },
   getters: {
     getToken: state => state.token,
     getRememberSesion: state => state.rememberSesion,
     getUser: state => state.user,
+    getSnackbar: state => state.snackbar,
   },
   mutations: {
     // UNIVERSAL MUTATION
@@ -39,6 +41,9 @@ export default new Vuex.Store({
     setRememberSesion: ({ commit }, { rememberSesion }) => {
       commit('SET_STATE_VALUE', { rememberSesion: rememberSesion });
     },
+    setSnackbar: ({ commit }, { show, text, color, timeout }) => {
+      commit('SET_STATE_VALUE', { snackbar: { show: show, text: text, color: color, timeout: timeout } });
+    }
   },
   modules: {
   }

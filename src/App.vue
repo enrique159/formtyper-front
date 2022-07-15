@@ -3,17 +3,36 @@
     <v-main>
       <router-view/>
     </v-main>
+
+    <!-- SNACKBAR -->
+    <v-snackbar
+      v-model="getSnackbar.show"
+      :timeout="getSnackbar.timeout"
+    >
+      {{ getSnackbar.text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          :color="getSnackbar.color"
+          text
+          v-bind="attrs"
+          @click="closeSnackbar()"
+        >
+          Cerrar
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
-
+import store from '@/store'
 export default {
   name: 'App',
-
-  data: () => ({
-    //
-  }),
+  computed: {
+    getSnackbar() {
+      return store.getters.getSnackbar
+    }
+  },
   created() {
     let vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
@@ -23,6 +42,11 @@ export default {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty("--vh", `${vh}px`);
     });
+  },
+  methods: {
+    closeSnackbar() {
+      store.dispatch('setSnackbar', { show: false, text: '', timeout: 4000, color: 'primary' })
+    }
   },
 };
 </script>
@@ -40,6 +64,6 @@ export default {
 }
 
 .v-list-item__icon > .v-icon {
-    color: rgba(0, 0, 0, 1) !important;
+    color: rgba(0, 0, 0, 0.8) !important;
 }
 </style>

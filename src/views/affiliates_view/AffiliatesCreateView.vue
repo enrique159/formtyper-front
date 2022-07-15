@@ -1,7 +1,7 @@
 <template>
   <div class="affiliates-create-view animation-fade-left">
     <v-container>
-      <h1>Crear nuevo registro</h1>
+      <h1 class="mb-3 mb-sm-0">Crear nuevo registro</h1>
       <RouteDirectoryComp :items="routeItems" />
     </v-container>
     <v-container>
