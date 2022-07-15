@@ -1,29 +1,74 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import HomeView from "@/views/HomeView.vue";
+import { isLoggedIn } from '@/auth/index'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    redirect: "/dashboard",
+    name: "home",
+    component: HomeView,
+    meta: {
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: () => import("@/views/main_views/DashboardView.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      // {
+      //   path: "/affiliates",
+      //   name: "affiliates",
+      //   component: () => import("@/views/main_views/AffiliatesView.vue"),
+      //   meta: {
+      //     requiresAuth: true,
+      //   },
+      // },
+      // {
+      //   path: "/affiliates/new",
+      //   name: "affiliate-new",
+      //   component: () =>
+      //     import("@/views/affiliates_view/AffiliatesCreateView.vue"),
+      //   meta: {
+      //     requiresAuth: true,
+      //   },
+      // },
+    ],
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/LoginView.vue"),
+    meta: {
+      requiresAuth: false,
+    },
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+// router.beforeEach(async (to, from, next) => {
+//   if (to.name == "login" && isLoggedIn()) {
+//     next({ path: "/" });
+//   } else if (to.meta.requiresAuth && !isLoggedIn()) {
+//     next({
+//       path: "/login",
+//       query: { redirect: to.fullPath },
+//     });
+//   } else {
+//     next();
+//   }
+// });
+
+export default router;

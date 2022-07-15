@@ -31,7 +31,11 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
 @import '@/styles/general.scss';
 
-.v-application__wrap {
+.v-application {
+  font-family: var(--general-font) !important;
+}
+
+.v-application--wrap {
   min-height: calc(var(--vh, 1vh) * 100) !important;
 }
 </style>

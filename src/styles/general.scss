@@ -69,10 +69,10 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--general-font);
-  font-size: var(--normal-font-size);
-  background-color: var(--color-white);
-  color: var(--color-text);
+  font-family: var(--general-font) !important;
+  font-size: var(--normal-font-size) !important;
+  background-color: var(--color-white) !important;
+  color: var(--color-text) !important;
   text-rendering: optimizeLegibility;
   transition: var(--transition-rapida);
   -webkit-font-smoothing: antialiased;
@@ -81,8 +81,8 @@ body {
 }
 
 h1,h2,h3,h4,h5,h6 {
-  color: var(--color-title);
-  font-weight: var(--font-bold);
+  color: var(--color-title) !important;
+  font-weight: var(--font-bold) !important;
   margin: 0;
 }
 
