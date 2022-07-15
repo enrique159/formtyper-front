@@ -3,8 +3,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 Vue.config.productionTip = false
+
+axios.defaults.headers.common['Allow-Control-Allow-Origin'] = '*'
+axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL;
+
+Vue.use(VueAxios, axios)
 
 new Vue({
   router,
