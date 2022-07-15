@@ -86,8 +86,8 @@ export default {
   name: "NavigationDrawerComp",
   data() {
     return {
-      desktop: true,
-      show: true,
+      desktop: false,
+      show: false,
     }
   },
   computed: {
