@@ -39,13 +39,17 @@
         </v-col>
       </v-row>
     </div>
+
+    <!-- ***************** DATA TABLE ***************** -->
     <v-data-table
       :headers="getHeaders"
       :items="items"
       :items-per-page="limit"
+      :loading="loading"
       class="affiliates-table my-4"
       hide-default-footer
-      :loading="loading"
+      mobile-breakpoint="0"
+      disable-sort
     >
       <template v-slot:[`item.createdAt`]="{ item }">
         {{ getDateFormatTimezone(item.createdAt) }}

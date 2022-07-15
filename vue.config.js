@@ -10,11 +10,5 @@ module.exports = defineConfig({
     msTileColor: '#FFFFFF',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
-
-    // configure the workbox plugin
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      swSrc: 'dev/sw.js',
-    }
   }
 })
