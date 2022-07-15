@@ -119,4 +119,12 @@ export default {
 .v-navigation-drawer {
   height: calc(var(--vh, 1vh) * 100) !important;
 }
+
+.v-application--is-ltr .v-list-item__action:first-child, .v-application--is-ltr .v-list-item__icon:first-child {
+    margin-right: 0px;
+}
+
+.v-application--is-ltr .v-list-item__avatar:first-child {
+    margin-right: 0px;
+}
 </style>
