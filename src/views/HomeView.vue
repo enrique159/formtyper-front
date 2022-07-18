@@ -22,6 +22,7 @@ import { logoutUser } from "@/auth/index";
 import store from '@/store';
 export default {
   name: 'Home',
+  metaInfo: { title: 'Home' },
   data() {
     return {
       showNavigation: false

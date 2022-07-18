@@ -28,6 +28,12 @@
 import store from '@/store'
 export default {
   name: 'App',
+  metaInfo: {
+    // if no subcomponents specify a metaInfo.title, this title will be used
+    title: 'App',
+    // all titles will be injected into this template
+    titleTemplate: '%s | FormTyper'
+  },
   computed: {
     getSnackbar() {
       return store.getters.getSnackbar

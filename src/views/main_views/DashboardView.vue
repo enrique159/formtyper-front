@@ -8,7 +8,8 @@
 
 <script>
 export default {
-  name: 'DashboardView'
+  name: 'DashboardView',
+  metaInfo: { title: 'Inicio' },
 }
 </script>
 

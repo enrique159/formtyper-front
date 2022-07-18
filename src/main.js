@@ -5,7 +5,9 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueMeta from 'vue-meta'
 import './registerServiceWorker'
+
 
 Vue.config.productionTip = false
 
@@ -14,6 +16,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
 axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL;
 
 Vue.use(VueAxios, axios)
+Vue.use(VueMeta)
 
 new Vue({
   router,

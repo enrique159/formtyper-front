@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer :permanent="desktop" v-model="show" mini-variant-width="58" expand-on-hover width="240" absolute>
+  <v-navigation-drawer :permanent="desktop" v-model="show" mini-variant-width="58" expand-on-hover width="240" :absolute="!desktop">
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar>
@@ -97,6 +97,7 @@ export default {
   },
   created() {
     window.addEventListener('resize', this.updateWindowWidth);
+    this.desktop = window.innerWidth > 586;
   },
   methods: {
     openView(route) {

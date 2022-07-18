@@ -39,6 +39,7 @@ import AffiliatesTableComp from '@/components/affiliates_view/AffiliatesTableCom
 import RouteDirectoryComp from '@/components/general/RouteDirectoryComp.vue'
 export default {
   name: 'AffiliatesView',
+  metaInfo: { title: 'Afiliados' },
   components: {
     AffiliatesTableComp,
     RouteDirectoryComp
