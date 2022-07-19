@@ -1,6 +1,6 @@
 <template>
   <div class="affiliates-view animation-fade-left">
-    <v-container>
+    <v-container class="px-8 px-sm-3">
       <h1 class="mb-3 mb-sm-0">Afiliados</h1>
       <div class="d-flex justify-space-between mb-4">
         <RouteDirectoryComp :items="items"/>
@@ -9,6 +9,8 @@
           Nuevo Afiliado
         </v-btn>
       </div>
+    </v-container>
+    <v-container>
       <AffiliatesTableComp />
     </v-container>
 

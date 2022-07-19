@@ -29,7 +29,7 @@
       </v-list-item>
       <v-list-item link>
         <v-list-item-icon>
-          <v-icon>mdi-account-multiple</v-icon>
+          <v-icon>mdi-account-supervisor-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Asociados</v-list-item-title>
       </v-list-item>
