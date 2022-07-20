@@ -21,11 +21,20 @@
         </v-btn>
       </template>
     </v-snackbar>
+
+    <!-- SNACKBAR UPDATE -->
+    <v-snackbar top center :value="updateExists" :timeout="0" color="primary">
+      Nueva version disponible
+      <v-btn text @click="refreshApp">
+        Actualizar
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
 import store from '@/store'
+import update from '@/mixins/update'
 export default {
   name: 'App',
   metaInfo: {
@@ -34,6 +43,7 @@ export default {
     // all titles will be injected into this template
     titleTemplate: '%s | FormTyper'
   },
+  mixins: [update],
   computed: {
     getSnackbar() {
       return store.getters.getSnackbar
