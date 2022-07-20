@@ -196,12 +196,12 @@ input {
 .ff-larken { font-family: var(--larken-font); }
 
 // BORDER RADIUS
-.br-smaller { border-radius: 6px; }
-.br-small { border-radius: 8px; }
-.br-medium { border-radius: 12px; }
-.br-big { border-radius: 16px; }
-.br-bigger { border-radius: 24px; }
-.br-biggest { border-radius: 32px; }
+.br-smaller { border-radius: 6px !important; }
+.br-small { border-radius: 8px !important; }
+.br-medium { border-radius: 12px !important; }
+.br-big { border-radius: 16px !important; }
+.br-bigger { border-radius: 24px !important; }
+.br-biggest { border-radius: 32px !important; }
 
 // ANIMATION DELAY
 .a-delay-1 { animation-delay: calc(var(--animate-delay) * 0.1); }

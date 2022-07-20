@@ -4,14 +4,14 @@
     <div class="affiliates-table-extensions flex-column py-4">
       <v-row>
         <v-col cols="5" sm="3">
-          <v-combobox
+          <v-select
             v-model="sort"
             :items="sortOptions"
             label="Ordenar por"
             outlined
             dense
             hide-details
-          ></v-combobox>
+          ></v-select>
         </v-col>
         <v-col cols="2" sm="6" class="pt-4">
           <v-btn
@@ -89,13 +89,13 @@
         color="primary accent-3"
         group
       >
-        <v-btn value="Compacto">
+        <v-btn class="br-small" value="Compacto">
           Compacto
         </v-btn>
-        <v-btn value="Direccion">
+        <v-btn class="br-small" value="Direccion">
           Dirección
         </v-btn>
-        <v-btn value="Detallado">
+        <v-btn class="br-small" value="Detallado">
           Detallado
         </v-btn>
       </v-btn-toggle>
