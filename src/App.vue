@@ -25,9 +25,16 @@
     <!-- SNACKBAR UPDATE -->
     <v-snackbar top center :value="updateExists" :timeout="0" color="primary">
       Nueva version disponible
-      <v-btn text @click="refreshApp">
-        Actualizar
-      </v-btn>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="primary accent-4"
+          text
+          v-bind="attrs"
+          @click="refreshApp"
+        >
+          Actualizar
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-app>
 </template>
@@ -82,5 +89,13 @@ export default {
 
 .v-list-item__icon > .v-icon {
     color: rgba(0, 0, 0, 0.8) !important;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
 }
 </style>

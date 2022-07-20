@@ -2,13 +2,13 @@
   <div class="home-view">
     <NavigationDrawerComp ref="NavigationDrawer" />
     <v-btn 
-      @click="showNavigationDrawer()"
-      outlined 
+      @click="showNavigationDrawer()" 
       absolute 
       icon 
       top 
       right 
       class="d-flex d-sm-none"
+      style="background-color: var(--color-background); z-index: 100;"
     >
       <v-icon>mdi-menu</v-icon>
     </v-btn>

@@ -9,7 +9,7 @@
         </v-btn>
       </div>
     </v-container>
-    <v-container class="px-8 px-sm-3">
+    <v-container class="px-8 px-sm-3 mb-6 mb-sm-0">
       <v-form ref="formNewAffiliate" v-model="validForm" lazy-validation>
         <v-row class="mb-8">
           <v-col cols="12" sm="4">
