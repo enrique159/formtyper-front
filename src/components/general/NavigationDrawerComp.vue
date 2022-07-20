@@ -23,7 +23,7 @@
       </v-list-item>
       <v-list-item @click="openView('affiliates')">
         <v-list-item-icon>
-          <v-icon>mdi-folder</v-icon>
+          <v-icon>mdi-clipboard-account</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Afiliados</v-list-item-title>
       </v-list-item>

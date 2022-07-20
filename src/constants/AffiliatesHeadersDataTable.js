@@ -1,5 +1,6 @@
 export const CompactAffiliatesHeader = [
   { text: "Nombre", value: "name" },
+  { text: "Clave Elector / CURP", value: "electoralKeyCurp" },
   { text: "Email", value: "email" },
   { text: "Teléfono", value: "cellPhoneNumber" },
   { text: "Creado", value: "createdAt" },

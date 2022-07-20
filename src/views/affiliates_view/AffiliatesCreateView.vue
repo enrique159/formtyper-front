@@ -25,6 +25,7 @@
                 <v-text-field
                   v-model="register.electoralKeyCurp"
                   label="Clave de Elector / CURP"
+                  @keypress="validateNumberText($event, register.electoralKeyCurp, 18)"
                   :counter="18"
                   :rules="[rules.required, rules.minLengthElector]"
                   outlined
@@ -48,6 +49,7 @@
                       :value="computedDateFormatted"
                       label="Fecha de registro"
                       :rules="[rules.required]"
+                      prepend-inner-icon="mdi-calendar"
                       readonly
                       required
                       outlined
@@ -80,6 +82,8 @@
                   v-model="register.federalDistrict"
                   label="Distrito Federal"
                   :rules="[rules.required]"
+                  prepend-inner-icon="mdi-pound"
+                  @keypress="validateNumber($event, register.federalDistrict, 4)"
                   outlined
                   dense
                   required
@@ -92,6 +96,8 @@
                   v-model="register.electoralSection"
                   label="Sección Electoral"
                   :rules="[rules.required]"
+                  @keypress="validateNumber($event, register.electoralSection, 2)"
+                  prepend-inner-icon="mdi-pound"
                   outlined
                   dense
                   required
@@ -121,6 +127,7 @@
                 <v-text-field
                   v-model="register.name"
                   label="Nombre"
+                  @keypress="validateText($event, register.name, 30)"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -133,6 +140,7 @@
                 <v-text-field
                   v-model="register.fatherSurname"
                   label="Apellido paterno"
+                  @keypress="validateText($event, register.fatherSurname, 30)"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -145,6 +153,7 @@
                 <v-text-field
                   v-model="register.motherSurname"
                   label="Apellido materno"
+                  @keypress="validateText($event, register.motherSurname, 30)"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -156,8 +165,10 @@
               <v-col cols="12" sm="8" class="pb-0">
                 <v-text-field
                   v-model="register.street"
-                  label="Calle"
                   :rules="[rules.required]"
+                  @keypress="validateLength($event, register.street, 100)"
+                  prepend-inner-icon="mdi-sign-direction"
+                  label="Calle"
                   outlined
                   dense
                   required
@@ -169,6 +180,7 @@
                 <v-text-field
                   v-model="register.extnum"
                   label="No. Ext"
+                  @keypress="validateNumberText($event, register.extnum, 6)"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -181,6 +193,7 @@
                 <v-text-field
                   v-model="register.intnum"
                   label="No. Int"
+                  @keypress="validateNumberText($event, register.intnum, 6)"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -204,7 +217,7 @@
               <v-col cols="12" sm="3" class="pb-0">
                 <v-text-field
                   v-model="register.city"
-                  label="CIUDAD"
+                  label="Ciudad"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -230,6 +243,7 @@
                   v-model="register.cp"
                   label="C.P."
                   :rules="[rules.required]"
+                  @keypress="validateNumber($event, register.cp, 5)"
                   outlined
                   dense
                   required
@@ -261,6 +275,7 @@
                   label="Teléfono celular"
                   prepend-inner-icon="mdi-phone"
                   :rules="[rules.required]"
+                  @keypress="validateNumber($event, register.cellPhoneNumber, 10)"
                   outlined
                   dense
                   required
@@ -274,6 +289,7 @@
                   label="Teléfono de casa"
                   prepend-inner-icon="mdi-phone-classic"
                   :rules="[]"
+                  @keypress="validateNumber($event, register.phoneNumber, 10)"
                   outlined
                   dense
                   required
@@ -287,6 +303,7 @@
                   label="Correo electrónico"
                   prepend-inner-icon="mdi-email"
                   :rules="[rules.email]"
+                  @keypress="validateEmail($event, register.email, 30)"
                   outlined
                   dense
                   required
@@ -297,14 +314,6 @@
         </v-row>  
 
         <div class="d-flex justify-end">
-          <v-btn
-            color="info"
-            depressed
-            class="mr-4"
-            @click="createFakeAffiliate()"
-          >
-            Crear registro aleatorio
-          </v-btn>
           <v-btn
             :disabled="loading"
             color="light"
@@ -332,7 +341,7 @@
 
 <script>
 import RouteDirectoryComp from "@/components/general/RouteDirectoryComp.vue";
-import { createFakeAffiliateRegister } from "@/common/createMockData";
+import { validateNumber, validateText, validateNumberText, validateEmail } from "@/common/utils";
 import AffiliatesServices from '@/services/AffiliatesServices';
 import store from '@/store'
 export default {
@@ -442,33 +451,60 @@ export default {
       this.register.signed = true;
     },
 
-    async createFakeAffiliate() {
-      const fakeAffiliate = await createFakeAffiliateRegister();
-      this.register.dateRegister = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10);
-      this.register.typeRegister = "Afiliación";
-      this.register.name = fakeAffiliate.name;
-      this.register.fatherSurname = fakeAffiliate.fatherSurname;
-      this.register.motherSurname = fakeAffiliate.motherSurname;
-      this.register.street = fakeAffiliate.street;
-      this.register.extnum = fakeAffiliate.extnum;
-      this.register.intnum = fakeAffiliate.intnum;
-      this.register.neighborhood = fakeAffiliate.neighborhood;
-      this.register.city = fakeAffiliate.city;
-      this.register.township = fakeAffiliate.township;
-      this.register.cp = fakeAffiliate.cp;
-      this.register.federalDistrict = fakeAffiliate.federalDistrict;
-      this.register.electoralSection = fakeAffiliate.electoralSection;
-      this.register.email = fakeAffiliate.email;
-      this.register.phoneNumber = fakeAffiliate.phoneNumber;
-      this.register.cellPhoneNumber = fakeAffiliate.cellPhoneNumber;
-      this.register.electoralKeyCurp = fakeAffiliate.electoralKeyCurp;
-      this.register.signed = true;
-    },
-
     formatDate(date) {
       if (!date) return null;
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
+    },
+
+    // Metodo para validar que el valor tecleado sea un numero
+    validateNumber(event, value, max) {
+      if (value) {
+        if (value.toString().length + 1 > max) {
+          event.preventDefault();
+        } else validateNumber(event);
+      } else {
+        validateNumber(event);
+      }
+    },
+
+    validateText(event, value, max) {
+      if (value) {
+        if (value.toString().length + 1 > max) {
+          event.preventDefault();
+        } else validateText(event);
+      } else {
+        validateText(event);
+      }
+    },
+
+    validateNumberText(event, value, max) {
+      if (value) {
+        if (value.toString().length + 1 > max) {
+          event.preventDefault();
+        } else validateNumberText(event);
+      } else {
+        validateNumberText(event);
+      }
+    },
+
+    validateEmail(event, value, max) {
+      if (value) {
+        if (value.toString().length + 1 > max) {
+          event.preventDefault();
+        } else validateEmail(event);
+      } else {
+        validateEmail(event);
+      }
+    },
+
+
+    validateLength(event, value, max) {
+      if (value) {
+        if (value.length + 1 > max) {
+          event.preventDefault();
+        }
+      }
     },
 
     // SHOW SNACKBAR
@@ -483,5 +519,6 @@ export default {
 .affiliates-create-view {
   height: 100%;
   width: 100%;
+  overflow-y: auto;
 }
 </style>

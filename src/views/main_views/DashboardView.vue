@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard animation-fade-left">
-    <v-container>
+    <v-container class="px-8 px-sm-3">
       <h1>Bienvenido</h1>
     </v-container>
   </div>

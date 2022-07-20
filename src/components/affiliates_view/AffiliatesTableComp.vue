@@ -13,14 +13,14 @@
             hide-details
           ></v-combobox>
         </v-col>
-        <v-col cols="2" sm="6">
+        <v-col cols="2" sm="6" class="pt-4">
           <v-btn
             @click="changeOrder"
             rounded
             color="primary"
             outlined
-            fab
             small
+            icon
           >
             <v-icon v-if="order === 'desc'">mdi-arrow-down</v-icon>
             <v-icon v-else>mdi-arrow-up</v-icon>
@@ -49,8 +49,10 @@
       class="affiliates-table my-4"
       hide-default-footer
       mobile-breakpoint="0"
-      disable-sort
     >
+      <template v-slot:[`item.name`]="{ item }">
+        {{ item.name }} {{ item.fatherSurname }} {{ item.motherSurname }}
+      </template>
       <template v-slot:[`item.createdAt`]="{ item }">
         {{ getDateFormatTimezone(item.createdAt) }}
       </template>
