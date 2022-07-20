@@ -27,7 +27,7 @@
       Nueva version disponible
       <template v-slot:action="{ attrs }">
         <v-btn
-          color="primary accent-4"
+          color="light accent-4"
           text
           v-bind="attrs"
           @click="refreshApp"
