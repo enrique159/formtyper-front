@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- DATA TABLE HEADER -->
-    <div class="affiliates-table-extensions py-4">
+    <div class="affiliates-table-extensions flex-column py-4">
       <v-row>
         <v-col cols="5" sm="3">
           <v-combobox
@@ -51,13 +51,22 @@
       mobile-breakpoint="0"
     >
       <template v-slot:[`item.name`]="{ item }">
-        {{ item.name }} {{ item.fatherSurname }} {{ item.motherSurname }}
+        <span class="one-line">{{ item.name }} {{ item.fatherSurname }} {{ item.motherSurname }}</span>
+      </template>
+      <template v-slot:[`item.street`]="{ item }">
+        <span class="one-line">{{ item.street }} #{{ item.extnum }} / {{ item.intnum }}</span>
+      </template>
+      <template v-slot:[`item.neighborhood`]="{ item }">
+        <span class="one-line">{{ item.neighborhood }}</span>
+      </template>
+      <template v-slot:[`item.dateRegister`]="{ item }">
+        <span class="one-line">{{ getDateFormatTimezone(item.dateRegister) }}</span>
       </template>
       <template v-slot:[`item.createdAt`]="{ item }">
-        {{ getDateFormatTimezone(item.createdAt) }}
+        <span class="one-line">{{ getDateTimeFormatTimezone(item.createdAt) }}</span>
       </template>
       <template v-slot:[`item.updatedAt`]="{ item }">
-        {{ getDateFormatTimezone(item.updatedAt) }}
+        <span class="one-line">{{ getDateTimeFormatTimezone(item.updatedAt) }}</span>
       </template>
     </v-data-table>
 
@@ -73,6 +82,23 @@
           hide-details
         ></v-combobox>
       </div>
+      <v-btn-toggle
+        v-model="typeHeaders"
+        tile
+        dense
+        color="primary accent-3"
+        group
+      >
+        <v-btn value="Compacto">
+          Compacto
+        </v-btn>
+        <v-btn value="Direccion">
+          Dirección
+        </v-btn>
+        <v-btn value="Detallado">
+          Detallado
+        </v-btn>
+      </v-btn-toggle>
       <v-pagination
         v-model="page"
         :length="totalPages"
@@ -85,7 +111,8 @@
 </template>
 
 <script>
-import { CompactAffiliatesHeader, FullAffiliatesHeader, AffiliatesSortOptions } from '@/constants/AffiliatesHeadersDataTable'
+import { CompactAffiliatesHeader, AddressAffiliatesHeader, FullAffiliatesHeader } from '@/constants/AffiliatesHeadersDataTable'
+import { AffiliatesSortOptions } from '@/constants/AffiliatesSortOptions'
 import AffiliatesServices from '@/services/AffiliatesServices'
 import moment from 'moment'
 export default {
@@ -97,6 +124,7 @@ export default {
       search: '',
       headersCompact: CompactAffiliatesHeader,
       headersFull: FullAffiliatesHeader,
+      headersAddress: AddressAffiliatesHeader,
       page: 1,
       limit: 10,
       totalItems: 0,
@@ -133,7 +161,9 @@ export default {
         return this.headersCompact;
       } else if(this.typeHeaders === 'Detallado') {
         return this.headersFull;
-      }
+      } else if(this.typeHeaders === 'Direccion') {
+        return this.headersAddress;
+      } else return this.headersCompact;
     }
   },
   methods: {
@@ -177,9 +207,17 @@ export default {
 
 
     // METODO PARA TRANSFORMAR LA FECHA A FORMATO DE TZ
-    getDateFormatTimezone(date) {
-      const dateTimezone = moment(date).subtract(6, 'hours');
+    getDateTimeFormatTimezone(date) {
+      const dateTimezone = moment(date);
       return dateTimezone.format('DD/MM/YYYY HH:mm:ss');
+    },
+
+    getDateFormatTimezone(date) {
+      if(date) {
+        const dateSplit = date.split('T')[0];
+        const formatDate = dateSplit.split('-');
+        return `${formatDate[2]}/${formatDate[1]}/${formatDate[0]}`;
+      } else return ""
     },
 
 
@@ -215,5 +253,11 @@ export default {
   box-shadow: var(--bs-normal);
   display: flex;
   justify-content: space-between;
+
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
+  }
 }
 </style>

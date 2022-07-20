@@ -232,6 +232,11 @@ input {
   animation: fade-left 0.5s;
 }
 
+// ONE LINE ROW
+.one-line {
+  white-space: nowrap;
+}
+
 // create fade-left keyframe animation
 @keyframes fade-left {
   0% {

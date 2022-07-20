@@ -83,7 +83,7 @@
                   label="Distrito Federal"
                   :rules="[rules.required]"
                   prepend-inner-icon="mdi-pound"
-                  @keypress="validateNumber($event, register.federalDistrict, 4)"
+                  @keypress="validateNumber($event, register.federalDistrict, 2)"
                   outlined
                   dense
                   required
@@ -96,7 +96,7 @@
                   v-model="register.electoralSection"
                   label="Sección Electoral"
                   :rules="[rules.required]"
-                  @keypress="validateNumber($event, register.electoralSection, 2)"
+                  @keypress="validateNumber($event, register.electoralSection, 4)"
                   prepend-inner-icon="mdi-pound"
                   outlined
                   dense
