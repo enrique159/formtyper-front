@@ -10,7 +10,7 @@
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <v-img src="@/assets/img/profile_image.jpg"></v-img>
+          <v-img :src="require(`@/assets/profile/profile_${getUser.image}.png`)"></v-img>
         </v-list-item-avatar>
         <v-list-item-content class="py-0" style="height: fit-content !important;">
           <v-list-item-title class="ts-normal">{{ getUser.name }} {{ getUser.lastname}}</v-list-item-title>
@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     getUser() {
-      return store.getters.getUser ? store.getters.getUser : { name: '', lastname: '', email: '' }
+      return store.getters.getUser ? store.getters.getUser : { name: '', lastname: '', email: '', image: 1 }
     }
   },
   created() {
