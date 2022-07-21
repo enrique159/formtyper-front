@@ -1,5 +1,12 @@
 <template>
-  <v-navigation-drawer :permanent="desktop" v-model="show" mini-variant-width="58" expand-on-hover width="240" :absolute="!desktop">
+  <v-navigation-drawer 
+    v-model="show" 
+    :permanent="desktop" 
+    :absolute="!desktop"
+    :expand-on-hover="desktop"
+    mini-variant-width="58" 
+    width="240" 
+  >
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar>
@@ -127,5 +134,11 @@ export default {
 
 .v-navigation-drawer--mini-variant .v-list-item__avatar {
     margin-right: 0px;
+}
+
+@media only screen and (max-width: 768px) {
+  .v-list-item__title {
+    font-size: 16px !important;
+  }
 }
 </style>
