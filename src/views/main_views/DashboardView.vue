@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard animation-fade-left">
     <v-container class="px-8 px-sm-3">
-      <h1>Bienvenido {{ user.name }}</h1>
+      <h2>Bienvenido {{ user.name }}</h2>
     </v-container>
   </div>
 </template>

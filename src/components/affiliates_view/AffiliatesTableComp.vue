@@ -46,6 +46,7 @@
       :items="items"
       :items-per-page="limit"
       :loading="loading"
+      @click:row="handleClick"
       class="affiliates-table my-4"
       hide-default-footer
       mobile-breakpoint="0"
@@ -73,14 +74,14 @@
     <!-- DATA TABLE FOOTER -->
     <div class="affiliates-table-extensions">
       <div style="width: 100%; max-width: 160px;">
-        <v-combobox
+        <v-select
           v-model="limit"
           :items="[5, 10, 25]"
           label="Limite por página"
           outlined
           dense
           hide-details
-        ></v-combobox>
+        ></v-select>
       </div>
       <v-btn-toggle
         v-model="typeHeaders"
@@ -117,6 +118,16 @@ import AffiliatesServices from '@/services/AffiliatesServices'
 import moment from 'moment'
 export default {
   name: 'AffiliatesTableComp',
+  props: {
+    updateRegister: {
+      type: Object,
+      default: () => ({})
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       typeHeaders: 'Compacto',
@@ -164,7 +175,23 @@ export default {
       } else if(this.typeHeaders === 'Direccion') {
         return this.headersAddress;
       } else return this.headersCompact;
-    }
+    },
+    showProp: {
+      get() {
+        return this.show;
+      },
+      set(value) {
+        this.$emit('updateShow', value);
+      },
+    },
+    updateRegisterProp: {
+      get() {
+        return this.updateRegister;
+      },
+      set(value) {
+        this.$emit('updateRegister', value);
+      },
+    },
   },
   methods: {
     // METODO PARA CAMBIAR ORDER
@@ -198,6 +225,12 @@ export default {
         }
       } else this.showSnackbar('No es posible conectar al servidor', 'red')
       this.loading = false;
+    },
+
+    // METODO PARA ABRIR Y EDITAR AFILIADO
+    handleClick(item) {
+      this.updateRegisterProp = item;
+      this.showProp = true;
     },
 
     // SHOW SNACKBAR

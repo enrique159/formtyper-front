@@ -91,6 +91,10 @@ export default {
     color: rgba(0, 0, 0, 0.8) !important;
 }
 
+.input-uppercase.v-input input {
+  text-transform: uppercase !important;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio:0) { 
   select,
   textarea,

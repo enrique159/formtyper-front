@@ -1,25 +1,45 @@
 <template>
-  <div class="affiliates-create-view animation-fade-left">
-    <v-container class="px-8 px-sm-3">
-      <h2 class="mb-3 mb-sm-0">Crear nuevo registro</h2>
-      <div class="d-flex justify-space-between align-center">
-        <RouteDirectoryComp :items="routeItems" />
-        <v-btn color="light" icon depressed @click="reset()">
-          <v-icon>mdi-cached</v-icon>
+  <div class="affiliates-edit-comp fade-left px-3 px-sm-8 py-4" :class="{ active: showEffect, 'fade-right': exit }">
+    <v-container fluid>
+      <div class="d-flex align-center">
+        <v-btn color="light" class="mr-3" icon depressed @click="cancel()">
+          <v-icon>mdi-close</v-icon>
         </v-btn>
+        <h2 class="mb-0">Editar registro</h2>
       </div>
     </v-container>
-    <v-container class="px-8 px-sm-3 mb-6 mb-sm-0">
-      <v-form ref="formNewAffiliate" v-model="validForm" lazy-validation>
+    <v-container class="px-8 px-sm-3 mb-6 mb-sm-0" style="height: 100%;">
+      <v-form ref="formEditAffiliate" v-model="validForm" lazy-validation class="d-flex flex-column justify-space-between" style="height: 100%">
         <v-row class="mb-8">
-          <v-col cols="12" sm="4">
-            <v-divider class="mb-3"></v-divider>
-            <h4>Información del registro</h4>
-            <p class="ts-small tc-text-light">Llenar los campos relacionados al registro</p>
+          <v-col cols="12" sm="3">
+            <v-row>
+              <v-col cols="6" sm="12">
+                <h5 class="mb-2 tw-regular">Creado por</h5>
+                <div class="profile-user mb-4">
+                  <img :src="require(`@/assets/profile/profile_${userCreator.image || 1}.png`)"/>
+                  <div>
+                    <h5 class="ts-text-light mb-0">{{ userCreator.name }} {{ userCreator.lastname}}</h5>
+                    <p class="ts-small mb-0">{{ userCreator.username }}</p>
+                    <span class="ts-small">{{ getDateTimeFormatTimezone(register.createdAt) }}</span>
+                  </div>
+                </div>
+              </v-col>
+              <v-col cols="6" sm="12">
+                <h5 class="mb-2 tw-regular">Modificado por</h5>
+                <div class="profile-user">
+                  <img :src="require(`@/assets/profile/profile_${userCreator.image || 1}.png`)"/>
+                  <div>
+                    <h5 class="ts-text-light mb-0">{{ userCreator.name }} {{ userCreator.lastname}}</h5>
+                    <p class="ts-small mb-0">{{ userCreator.username }}</p>
+                    <span class="ts-small">{{ getDateTimeFormatTimezone(register.createdAt) }}</span>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
           </v-col>
 
-          <v-col cols="12" sm="8">
-            <v-row>
+          <v-col cols="12" sm="9">
+            <v-row class="mb-6">
               <!-- CLAVE DE ELECTOR / CURP -->
               <v-col cols="12" class="pb-0">
                 <v-text-field
@@ -106,23 +126,13 @@
               </v-col>
 
             </v-row>
-          </v-col>
-        </v-row>
 
-        <!-- ///////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////
-        ////////////////////// INFORMACION PERSONAL DEL REGISTRO /////////////////////// -->
+            <!-- ///////////////////////////////////////////////////////////////////////////
+              ////////////////////////////////////////////////////////////////////////////////
+              ////////////////////////////////////////////////////////////////////////////////
+              ////////////////////// INFORMACION PERSONAL DEL REGISTRO /////////////////////// -->
 
-        <v-row class="mb-8">
-          <v-col cols="12" sm="4">
-            <v-divider class="mb-3"></v-divider>
-            <h4>Información personal</h4>
-            <p class="ts-small tc-text-light">Llenar los campos relacionados a la persona</p>
-          </v-col>
-
-          <v-col cols="12" sm="8">
-            <v-row>
+            <v-row class="mb-6">
               <!-- NOMBRE -->
               <v-col cols="12" sm="4" class="pb-0">
                 <v-text-field
@@ -252,22 +262,12 @@
               </v-col>
 
             </v-row>
-          </v-col>
-        </v-row>
 
-        <!-- ///////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////
-        ////////////////////// INFORMACION DE CONTACTO ///////////////////////////////// -->
+            <!-- ///////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////
+            ////////////////////// INFORMACION DE CONTACTO ///////////////////////////////// -->
 
-        <v-row>
-          <v-col cols="12" sm="4">
-            <v-divider class="mb-3"></v-divider>
-            <h4>Información de contacto</h4>
-            <p class="ts-small tc-text-light">Llena los campos de contacto de la persona</p>
-          </v-col>
-
-          <v-col cols="12" sm="8">
             <v-row>
               <!-- TELEFONO CELULAR -->
               <v-col cols="12" sm="4" class="pb-0">
@@ -312,111 +312,134 @@
               </v-col>
             </v-row>
           </v-col>
-        </v-row>  
+        </v-row>
 
-        <div class="d-flex justify-end">
+        <div class="d-flex justify-space-between pb-8">
           <v-btn
             :disabled="loading"
-            color="light"
-            depressed
+            color="error"
+            text
             class="mr-4"
-            @click="cancel()"
+            @click="deleteAffiliate()"
           >
-            Cancelar
+            <v-icon style="font-size: 18px">mdi-trash-can-outline</v-icon>
+            Eliminar
           </v-btn>
+          <div class="d-flex">
+            <v-btn
+              :disabled="loading"
+              color="light"
+              depressed
+              class="mr-4"
+              @click="cancel()"
+            >
+              Cancelar
+            </v-btn>
 
-          <v-btn
-            :disabled="!validForm || loading"
-            :loading="loading"
-            color="primary"
-            @click="validate"
-          >
-            Registrar
-          </v-btn>
+            <v-btn
+              :disabled="!validForm || loading"
+              :loading="loading"
+              color="primary"
+              @click="validate"
+            >
+              Guardar cambios
+            </v-btn>
+          </div>
         </div>
 
       </v-form>
     </v-container>
+    <AffiliatesDeleteDialogComp :show="deleteDialog" :affiliate="register" v-on:updateShow="deleteDialog = $event" />
   </div>
 </template>
 
 <script>
-import RouteDirectoryComp from "@/components/general/RouteDirectoryComp.vue";
 import { validateNumber, validateText, validateNumberText, validateEmail } from "@/common/utils";
+import AffiliatesDeleteDialogComp from "@/components/affiliates_view/AffiliatesDeleteDialogComp";
 import AffiliatesServices from '@/services/AffiliatesServices';
+import UserServices from '@/services/UserServices';
+import moment from 'moment';
 import store from '@/store'
 export default {
-  name: "AffiliatesCreateView",
-  metaInfo: { title: "Nuevo Afiliado" },
+  name: 'AffiliatesEditComp',
   components: {
-    RouteDirectoryComp,
+    AffiliatesDeleteDialogComp
   },
   data() {
     return {
+      exit: false,
+      showEffect: false,
       menuFechaRegistro: false,
       validForm: false,
       loading: false,
-      routeItems: [
-        { name: "Inicio", disabled: false, route: "/dashboard" },
-        { name: "Afiliados", disabled: false, route: "/affiliates" },
-        { name: "Nuevo Afiliado", disabled: true, route: "/newaffiliate" },
-      ],
+      deleteDialog: false,
       rules: {
         required: (v) => !!v || "Este campo es requerido",
         minLength: (v) => (v && v.length >= 10) || "Debe contener al menos 10 caracteres",
         minLengthElector: (v) => (v && v.length == 18) || "Debe contener exactamente 18 caracteres",
         email: (v) => (/.+@.+\..+/.test(v) || v == '') || "Email no válido",
       },
-
-      register: {
-        typeRegister: "Afiliación",
-        dateRegister: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
-        name: "",
-        fatherSurname: "",
-        motherSurname: "",
-        street: "",
-        extnum: "",
-        intnum: "",
-        neighborhood: "",
-        city: "",
-        township: "",
-        cp: "",
-        federalDistrict: "",
-        electoralSection: "",
-        email: "",
-        phoneNumber: "",
-        cellPhoneNumber: "",
-        electoralKeyCurp: "",
-        signed: true,
-      }
-    };
+      register: {},
+      userCreator: {},
+      userModifier: {},
+    }
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+    },
+    updateRegister: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  async created() {
+    // clone updateRegister to register without reference
+    this.register = JSON.parse(JSON.stringify(this.updateRegister));
+    this.register.dateRegister = new Date(this.register.dateRegister || Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)
+    this.userCreator = await this.getUser(this.register.createdBy);
+    this.register.createdBy != this.register.updatedBy ? this.userModifier = await this.getUser(this.register.updatedBy) : this.userModifier = this.userCreator;
+  },
+  mounted() { 
+    setTimeout(() => {
+      this.showEffect = true;
+    }, 100);
   },
   computed: {
     computedDateFormatted() {
       return this.formatDate(this.register.dateRegister);
     },
+    showProp: {
+      get() {
+        return this.show;
+      },
+      set(value) {
+        this.$emit('updateShow', value);
+      },
+    },
   },
   methods: {
     async validate() {
-      await this.$refs.formNewAffiliate.validate();
+      await this.$refs.formEditAffiliate.validate();
       if(!!this.validForm) {
-        this.createAffiliate();
+        this.updateAffiliate();
       }
     },
 
-    cancel() {
-      this.$router.push("/affiliates");
-    },
-
-    async createAffiliate() {
+    async updateAffiliate() {
       this.loading = true;
       const delay = ms => new Promise(res => setTimeout(res, ms));
       await delay(2000);
-      const response = await AffiliatesServices.createAffiliate(this.register)
+      const response = await AffiliatesServices.updateAffiliate(this.register)
       if(response) {
         if(response.status === 200) {
-          this.showSnackbar('Registro creado con éxito', 'success');
-          this.reset();
+          this.showSnackbar('Registro actualizado con éxito', 'success');
+          this.exit = true;
+          setTimeout(() => {
+            this.$parent.reloadAffiliates();
+            this.showProp = false;
+          }, 200);
         } else {
           if (response.status == 401) this.showSnackbar('Usuario no válido para realizar esta operación', 'red');
           else this.showSnackbar('Ocurrió un error en el servidor', 'red');
@@ -425,37 +448,47 @@ export default {
       this.loading = false;
     },
 
-    reset() {
-      this.$refs.formNewAffiliate.resetValidation()
-      this.setStartValues()
+    async getUser(id) {
+      const response = await UserServices.getUser(id);
+      if(response) {
+        if(response.status === 200) {
+          return response.data
+        } else {
+          if (response.status == 401) this.showSnackbar('Usuario no válido para realizar esta operación', 'red');
+          else this.showSnackbar('Ocurrió un error en el servidor', 'red');
+        }
+      } else this.showSnackbar('No hay conexión con el servidor', 'red');
     },
 
-    setStartValues() {
-      this.register.dateRegister = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10);
-      this.register.typeRegister = "Afiliación";
-      this.register.name = "";
-      this.register.fatherSurname = "";
-      this.register.motherSurname = "";
-      this.register.street = "";
-      this.register.extnum = "";
-      this.register.intnum = "";
-      this.register.neighborhood = "";
-      this.register.city = "";
-      this.register.township = "";
-      this.register.cp = "";
-      this.register.federalDistrict = "";
-      this.register.electoralSection = "";
-      this.register.email = "";
-      this.register.phoneNumber = "";
-      this.register.cellPhoneNumber = "";
-      this.register.electoralKeyCurp = "";
-      this.register.signed = true;
+    deleteAffiliate() {
+      this.deleteDialog = true;
     },
+
+    deleteSuccess() {
+      this.exit = true;
+      setTimeout(() => {
+        this.$parent.reloadAffiliates();
+        this.showProp = false;
+      }, 200);
+    },
+
+    cancel() {
+      this.exit = true;
+      setTimeout(() => {
+        this.showProp = false;
+      }, 200);
+    },
+
 
     formatDate(date) {
       if (!date) return null;
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
+    },
+
+    getDateTimeFormatTimezone(date) {
+      const dateTimezone = moment(date);
+      return dateTimezone.format('DD/MM/YYYY HH:mm:ss');
     },
 
     // Metodo para validar que el valor tecleado sea un numero
@@ -513,13 +546,43 @@ export default {
       store.dispatch('setSnackbar', { show: true, text: text, color: color, timeout: 4000,})
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
-.affiliates-create-view {
+.affiliates-edit-comp {
+  position: absolute;
+  top: 0;
+  right: -998px;
   height: 100%;
   width: 100%;
+  max-width: 998px;
+  background-color: var(--color-white);
+  box-shadow: var(--bs-dark);
+  transition: 0.2s ease-in-out;
+  border-left: 1px solid var(--color-background-dark);
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
+}
+
+.profile-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  img {
+    width: 100%;
+    max-width: 36px;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.affiliates-edit-comp.active {
+  right: 0;
+}
+
+.fade-right {
+  right: -998px !important;
 }
 </style>

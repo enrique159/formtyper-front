@@ -11,5 +11,17 @@ export default {
     return axios.post('/affiliates/create', affiliate)
       .then(response => response)
       .catch(error => error.response);
+  },
+
+  updateAffiliate(affiliate) {
+    return axios.put(`/affiliates/update/${affiliate._id}`, affiliate)
+      .then(response => response)
+      .catch(error => error.response);
+  },
+
+  deleteAffiliate(idAffiliate) {
+    return axios.delete(`/affiliates/delete/${idAffiliate}`)
+      .then(response => response)
+      .catch(error => error.response);
   }
 }

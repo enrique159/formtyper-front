@@ -53,7 +53,7 @@
   // --bs-secondary: 0 0.5rem 1rem 0.1rem #0311499d;
   // --bs-danger: 0 0.5rem 1rem 0.1rem #ff003c55;
   // --bs-light: 0 0.5rem 1rem 0.1rem #9595951a;
-  // --bs-dark: 0 0.5rem 1rem 0.1rem #0000001d;
+  --bs-dark: 0 0.5rem 1rem 0.1rem #0000001d;
 }
 
 * {
@@ -183,13 +183,13 @@ input {
 .ts-smaller { font-size: var(--smaller-font-size); }
 
 // TEXT WEIGHTS
-.tw-black { font-weight: var(--font-black); }
-.tw-heavy { font-weight: var(--font-heavy); }
-.tw-bold { font-weight: var(--font-bold); }
-.tw-medium { font-weight: var(--font-medium); }
-.tw-regular { font-weight: var(--font-regular); }
-.tw-light { font-weight: var(--font-light); }
-.tw-thin { font-weight: var(--font-thin); }
+.tw-black { font-weight: var(--font-black) !important; }
+.tw-heavy { font-weight: var(--font-heavy) !important; }
+.tw-bold { font-weight: var(--font-bold) !important; }
+.tw-medium { font-weight: var(--font-medium) !important; }
+.tw-regular { font-weight: var(--font-regular) !important; }
+.tw-light { font-weight: var(--font-light) !important; }
+.tw-thin { font-weight: var(--font-thin) !important; }
 
 // FONT FAMILY
 .ff-general { font-family: var(--general-font); }
