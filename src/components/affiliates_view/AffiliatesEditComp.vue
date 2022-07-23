@@ -27,11 +27,11 @@
               <v-col cols="6" sm="12">
                 <h5 class="mb-2 tw-regular">Modificado por</h5>
                 <div class="profile-user">
-                  <img :src="require(`@/assets/profile/profile_${userCreator.image || 1}.png`)"/>
+                  <img :src="require(`@/assets/profile/profile_${userModifier.image || 1}.png`)"/>
                   <div>
-                    <h5 class="ts-text-light mb-0">{{ userCreator.name }} {{ userCreator.lastname}}</h5>
-                    <p class="ts-small mb-0">{{ userCreator.username }}</p>
-                    <span class="ts-small">{{ getDateTimeFormatTimezone(register.createdAt) }}</span>
+                    <h5 class="ts-text-light mb-0">{{ userModifier.name }} {{ userModifier.lastname}}</h5>
+                    <p class="ts-small mb-0">{{ userModifier.username }}</p>
+                    <span class="ts-small">{{ getDateTimeFormatTimezone(register.updatedAt) }}</span>
                   </div>
                 </div>
               </v-col>
