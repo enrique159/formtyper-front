@@ -323,7 +323,7 @@
             @click="deleteAffiliate()"
           >
             <v-icon style="font-size: 18px">mdi-trash-can-outline</v-icon>
-            Eliminar
+            <span class="d-none d-sm-flex tc-error">Eliminar</span>
           </v-btn>
           <div class="d-flex">
             <v-btn
@@ -342,7 +342,7 @@
               color="primary"
               @click="validate"
             >
-              Guardar cambios
+              Guardar
             </v-btn>
           </div>
         </div>

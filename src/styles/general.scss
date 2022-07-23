@@ -2,6 +2,7 @@
   /*COLORS*/
   /* Hex color mode */
   --color-primary: #8915ef;
+  --color-error: #ff5252;
 
   // COLORES DE SISTEMA
   --color-title: #231f20;
@@ -165,6 +166,7 @@ input {
 
 // TEXT COLORS
 .tc-primary { color: var(--color-primary) !important; }
+.tc-error { color: var(--color-error) !important; }
 .tc-title { color: var(--color-title) !important; }
 .tc-text { color: var(--color-text) !important; }
 .tc-text-light { color: var(--color-text-light) !important; }
