@@ -342,9 +342,10 @@
 
 <script>
 import RouteDirectoryComp from "@/components/general/RouteDirectoryComp.vue";
-import { validateNumber, validateText, validateNumberText, validateEmail } from "@/common/utils";
 import AffiliatesServices from '@/services/AffiliatesServices';
-import store from '@/store'
+import { validateNumber, validateText, validateNumberText, validateEmail } from "@/utils/keyPressValidate";
+import { errorCreateAffiliate } from "@/utils/errors/errorCreateAffiliate";
+import { showSnackbar } from "@/utils/showSnackbar";
 export default {
   name: "AffiliatesCreateView",
   metaInfo: { title: "Nuevo Afiliado" },
@@ -411,17 +412,16 @@ export default {
     async createAffiliate() {
       this.loading = true;
       const delay = ms => new Promise(res => setTimeout(res, ms));
-      await delay(2000);
+      await delay(1000);
       const response = await AffiliatesServices.createAffiliate(this.register)
       if(response) {
         if(response.status === 200) {
-          this.showSnackbar('Registro creado con éxito', 'success');
+          showSnackbar('Registro creado con éxito', 'success');
           this.reset();
         } else {
-          if (response.status == 401) this.showSnackbar('Usuario no válido para realizar esta operación', 'red');
-          else this.showSnackbar('Ocurrió un error en el servidor', 'red');
+          errorCreateAffiliate(response)
         }
-      } else this.showSnackbar('No hay conexión con el servidor', 'red');
+      } else showSnackbar('No hay conexión con el servidor', 'red');
       this.loading = false;
     },
 
@@ -506,11 +506,6 @@ export default {
           event.preventDefault();
         }
       }
-    },
-
-    // SHOW SNACKBAR
-    showSnackbar(text, color) {
-      store.dispatch('setSnackbar', { show: true, text: text, color: color, timeout: 4000,})
     },
   },
 };

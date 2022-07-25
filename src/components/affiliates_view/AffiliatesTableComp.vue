@@ -113,8 +113,10 @@
 
 <script>
 import { CompactAffiliatesHeader, AddressAffiliatesHeader, FullAffiliatesHeader } from '@/constants/AffiliatesHeadersDataTable'
-import { AffiliatesSortOptions } from '@/constants/AffiliatesSortOptions'
 import AffiliatesServices from '@/services/AffiliatesServices'
+import { AffiliatesSortOptions } from '@/constants/AffiliatesSortOptions'
+import { errorGetAffiliates } from '@/utils/errors/errorGetAffiliates'
+import { showSnackbar } from '@/utils/showSnackbar'
 import moment from 'moment'
 export default {
   name: 'AffiliatesTableComp',
@@ -221,9 +223,9 @@ export default {
           this.totalItems = response.data.totalItems;
           this.totalPages = response.data.totalPages;
         } else {
-          this.showSnackbar('Ocurrio un error inesperado', 'red')
+          errorGetAffiliates(response);
         }
-      } else this.showSnackbar('No es posible conectar al servidor', 'red')
+      } else showSnackbar('No es posible conectar al servidor', 'red')
       this.loading = false;
     },
 
@@ -232,12 +234,6 @@ export default {
       this.updateRegisterProp = item;
       this.showProp = true;
     },
-
-    // SHOW SNACKBAR
-    showSnackbar(text, color) {
-      store.dispatch('setSnackbar', { show: true, text: text, color: color, timeout: 4000,})
-    },
-
 
     // METODO PARA TRANSFORMAR LA FECHA A FORMATO DE TZ
     getDateTimeFormatTimezone(date) {

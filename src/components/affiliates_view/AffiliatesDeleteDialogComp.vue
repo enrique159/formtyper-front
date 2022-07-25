@@ -44,7 +44,8 @@
 
 <script>
 import AffiliatesServices from "@/services/AffiliatesServices";
-import store from "@/store";
+import { errorDeleteAffiliate } from "@/utils/errors/errorDeleteAffiliate";
+import { showSnackbar } from "@/utils/showSnackbar";
 export default {
   name: "AffiliatesDeleteDialogComp",
   props: ["show", "affiliate"],
@@ -71,29 +72,14 @@ export default {
       const response = await AffiliatesServices.deleteAffiliate(this.affiliate._id);
       if (response) {
         if (response.status === 200) {
-          this.showSnackbar("Registro eliminado con éxito", "success");
+          showSnackbar("Registro eliminado con éxito", "success");
           this.$parent.deleteSuccess();
           this.showProp = false;
         } else {
-          if (response.status == 401)
-            this.showSnackbar(
-              "Usuario no válido para realizar esta operación",
-              "red"
-            );
-          else this.showSnackbar("Ocurrió un error en el servidor", "red");
+          errorDeleteAffiliate(response);
         }
-      } else this.showSnackbar("No hay conexión con el servidor", "red");
+      } else showSnackbar("No hay conexión con el servidor", "red");
       this.loading = false;
-    },
-
-    // SHOW SNACKBAR
-    showSnackbar(text, color) {
-      store.dispatch("setSnackbar", {
-        show: true,
-        text: text,
-        color: color,
-        timeout: 4000,
-      });
     },
   },
 };

@@ -23,36 +23,29 @@ export function setRememberSesion(rememberSesion) {
 
 export function isLoggedIn() {
   let authToken = getAuthToken()
-  return !!authToken
-  //return authToken && !isTokenExpired(authToken)
+  return !!authToken && !isTokenExpired(authToken)
 }
 
 export function getAuthToken() {
   return store.getters.getToken
 }
 
-export function getUserInfo() {
-  if (isLoggedIn()) {
-    return decode(store.getters.getToken).result///store.getters.getUser
-  }
+function isTokenExpired(token) {
+  let expirationDate = getTokenExpirationDate(token)
+  return expirationDate < new Date()
 }
 
-// function isTokenExpired(token) {
-//   let expirationDate = getTokenExpirationDate(token)
-//   return expirationDate < new Date()
-// }
+function getTokenExpirationDate(encodedToken) {
+  let token = decode(encodedToken)
+  if (!token.exp) {
+    return null
+  }
 
-// function getTokenExpirationDate(encodedToken) {
-//   let token = decode(encodedToken)
-//   if (!token.exp) {
-//     return null
-//   }
+  let date = new Date(0)
+  date.setUTCSeconds(token.exp)
 
-//   let date = new Date(0)
-//   date.setUTCSeconds(token.exp)
-
-//   return date
-// }
+  return date
+}
 
 
 

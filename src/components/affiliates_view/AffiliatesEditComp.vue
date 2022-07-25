@@ -354,12 +354,14 @@
 </template>
 
 <script>
-import { validateNumber, validateText, validateNumberText, validateEmail } from "@/common/utils";
+import { validateNumber, validateText, validateNumberText, validateEmail } from "@/utils//keyPressValidate";
 import AffiliatesDeleteDialogComp from "@/components/affiliates_view/AffiliatesDeleteDialogComp";
 import AffiliatesServices from '@/services/AffiliatesServices';
 import UserServices from '@/services/UserServices';
+import { errorEditAffiliate } from "@/utils/errors/errorEditAffiliate";
+import { errorGetUser } from "@/utils/errors/errorGetUser";
+import { showSnackbar } from "@/utils/showSnackbar";
 import moment from 'moment';
-import store from '@/store'
 export default {
   name: 'AffiliatesEditComp',
   components: {
@@ -434,30 +436,28 @@ export default {
       const response = await AffiliatesServices.updateAffiliate(this.register)
       if(response) {
         if(response.status === 200) {
-          this.showSnackbar('Registro actualizado con éxito', 'success');
+          showSnackbar('Registro actualizado con éxito', 'success');
           this.exit = true;
           setTimeout(() => {
             this.$parent.reloadAffiliates();
             this.showProp = false;
           }, 200);
         } else {
-          if (response.status == 401) this.showSnackbar('Usuario no válido para realizar esta operación', 'red');
-          else this.showSnackbar('Ocurrió un error en el servidor', 'red');
+          errorEditAffiliate(response)
         }
-      } else this.showSnackbar('No hay conexión con el servidor', 'red');
+      } else showSnackbar('No hay conexión con el servidor', 'red');
       this.loading = false;
     },
 
     async getUser(id) {
-      const response = await UserServices.getUser(id);
+      const response = await UserServices.getUserSimple(id);
       if(response) {
         if(response.status === 200) {
           return response.data
         } else {
-          if (response.status == 401) this.showSnackbar('Usuario no válido para realizar esta operación', 'red');
-          else this.showSnackbar('Ocurrió un error en el servidor', 'red');
+          errorGetUser(response)
         }
-      } else this.showSnackbar('No hay conexión con el servidor', 'red');
+      } else showSnackbar('No hay conexión con el servidor', 'red');
     },
 
     deleteAffiliate() {
@@ -539,11 +539,6 @@ export default {
           event.preventDefault();
         }
       }
-    },
-
-    // SHOW SNACKBAR
-    showSnackbar(text, color) {
-      store.dispatch('setSnackbar', { show: true, text: text, color: color, timeout: 4000,})
     },
   },
 }

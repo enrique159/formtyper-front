@@ -23,7 +23,7 @@
     </v-snackbar>
 
     <!-- SNACKBAR UPDATE -->
-    <v-snackbar top center :value="updateExists" :timeout="0" color="primary">
+    <v-snackbar top center :value="updateExists" :timeout="-1" color="primary">
       Nueva version disponible
       <template v-slot:action="{ attrs }">
         <v-btn

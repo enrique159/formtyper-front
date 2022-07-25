@@ -6,4 +6,10 @@ export default {
     .then(response => response)
     .catch(error => error.response);
   }, 
+
+  getUserSimple(id) {
+    return axios.get(`/users/simple/${id}`)
+    .then(response => response)
+    .catch(error => error.response);
+  }, 
 };

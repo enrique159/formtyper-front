@@ -61,6 +61,8 @@
 <script>
 import AuthServices from '@/services/authServices';
 import { setAuthToken, setRememberSesion, setUser } from "../auth/index";
+import { errorAuthUser} from "@/utils/errors/errorAuthUser";
+import { showSnackbar } from "@/utils/showSnackbar";
 import store from '@/store';
 export default {
   name: 'LoginView',
@@ -104,22 +106,10 @@ export default {
           this.setUserLogin(response);
           this.$router.push('/dashboard');
         } else {
-          if(response.status == 400 || response.status == 401){
-            this.showSnackbar('No se ha encontrado un usuario con esas credenciales', 'red');
-          } 
-          else if(response.status == 500) {
-            if(response.data.error == 'incorrectPassword') {
-              this.showSnackbar('La contraseña es incorrecta', 'red');
-            } else if(response.data.error == 'internalError') {
-              this.showSnackbar('Ocurrió un error en el servidor', 'red');
-            }
-          }
-          else {
-            this.showSnackbar('Ocurrió un error en el servidor', 'red');
-          }
+          errorAuthUser(response);
         }
       } else {
-        this.showSnackbar('No hay conexión con el servidor', 'red');
+        showSnackbar('No hay conexión con el servidor', 'red');
       };
       this.loading = false;
     },
@@ -129,11 +119,6 @@ export default {
       setAuthToken(user.data.token);
       setUser(user.data.user);
       setRememberSesion(this.rememberSession);
-    },
-
-    // SHOW SNACKBAR
-    showSnackbar(text, color) {
-      store.dispatch('setSnackbar', { show: true, text: text, color: color, timeout: 4000,})
     },
   }
 }
