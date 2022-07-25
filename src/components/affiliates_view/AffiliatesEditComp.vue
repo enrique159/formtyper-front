@@ -99,16 +99,15 @@
 
               <!-- DISTRITO FEDERAL -->
               <v-col cols="6" sm="3" class="pb-0">
-                <v-text-field
+                <v-select
                   v-model="register.federalDistrict"
                   label="Distrito Federal"
-                  :rules="[rules.required]"
+                  :items="[1, 2]"
                   prepend-inner-icon="mdi-pound"
-                  @keypress="validateNumber($event, register.federalDistrict, 2)"
                   outlined
                   dense
                   required
-                ></v-text-field>
+                ></v-select>
               </v-col>
 
               <!-- SECCION ELECTORAL -->
