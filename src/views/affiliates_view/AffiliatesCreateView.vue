@@ -274,11 +274,10 @@
                   v-model="register.cellPhoneNumber"
                   label="Teléfono celular"
                   prepend-inner-icon="mdi-phone"
-                  :rules="[rules.required]"
+                  :rules="[rules.minLengthPhone]"
                   @keypress="validateNumber($event, register.cellPhoneNumber, 10)"
                   outlined
                   dense
-                  required
                 ></v-text-field>
               </v-col>
 
@@ -288,11 +287,10 @@
                   v-model="register.phoneNumber"
                   label="Teléfono de casa"
                   prepend-inner-icon="mdi-phone-classic"
-                  :rules="[]"
+                  :rules="[rules.minLengthPhone]"
                   @keypress="validateNumber($event, register.phoneNumber, 10)"
                   outlined
                   dense
-                  required
                 ></v-text-field>
               </v-col>
 
@@ -365,6 +363,7 @@ export default {
         required: (v) => !!v || "Este campo es requerido",
         minLength: (v) => (v && v.length >= 10) || "Debe contener al menos 10 caracteres",
         minLengthElector: (v) => (v && v.length == 18) || "Debe contener exactamente 18 caracteres",
+        minLengthPhone : (v) => (v.length == 10 || v == '') || "Debe contener 10 dígitos",
         email: (v) => (/.+@.+\..+/.test(v) || v == '') || "Email no válido",
       },
 
