@@ -1,7 +1,10 @@
 export const CompactMembersHeader = [
+  { text: '#', value: "memberId" },
   { text: "Nombre", value: "name" },
-  { text: "Email", value: "email" },
+  { text: 'Dirección', value: 'address' },
   { text: "Teléfono", value: "phoneNumber" },
+  { text: "Email", value: "email" },
+  { text: "Fecha de nacimiento", value: "birthDate" },
   { text: "Creado", value: "createdAt" },
   { text: "Actualizado", value: "updatedAt" },
 ]

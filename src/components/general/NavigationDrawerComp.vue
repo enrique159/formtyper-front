@@ -24,19 +24,19 @@
     <v-list nav dense>
       <v-list-item @click="openView('dashboard')">
         <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'dashboard'}">mdi-home</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Inicio</v-list-item-title>
       </v-list-item>
       <v-list-item @click="openView('affiliates')">
         <v-list-item-icon>
-          <v-icon>mdi-clipboard-account</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'affiliates'}">mdi-clipboard-account</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Afiliados</v-list-item-title>
       </v-list-item>
       <v-list-item @click="openView('members')">
         <v-list-item-icon>
-          <v-icon>mdi-account-supervisor-circle</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'members'}">mdi-account-supervisor-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Miembros</v-list-item-title>
       </v-list-item>
@@ -100,6 +100,9 @@ export default {
   computed: {
     getUser() {
       return store.getters.getUser ? store.getters.getUser : { name: '', lastname: '', email: '', image: 1 }
+    },
+    getRouteName() {
+      return this.$route.path.split('/')[1]
     }
   },
   created() {
@@ -136,6 +139,9 @@ export default {
     margin-right: 0px;
 }
 
+.icon-active {
+    color: black !important;
+}
 @media only screen and (max-width: 768px) {
   .v-list-item__title {
     font-size: 16px !important;

@@ -203,7 +203,7 @@
                   label="Teléfono celular"
                   prepend-inner-icon="mdi-phone"
                   :rules="[rules.minLengthPhone]"
-                  @keypress="validateNumber($event, register.cellPhoneNumber, 10)"
+                  @keypress="validateNumber($event, register.phoneNumber, 10)"
                   outlined
                   dense
                 ></v-text-field>

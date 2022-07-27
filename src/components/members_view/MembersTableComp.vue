@@ -51,7 +51,40 @@
       hide-default-footer
       mobile-breakpoint="0"
     >
+      <template v-slot:[`item.name`]="{ item }">
+        <span class="one-line">{{ item.name }} {{ item.fatherSurname }} {{ item.motherSurname }}</span>
+      </template>
+      <template v-slot:[`item.birthDate`]="{ item }">
+        <span class="one-line">{{ getDateFormatTimezone(item.birthDate) }}</span>
+      </template>
+      <template v-slot:[`item.createdAt`]="{ item }">
+        <span class="one-line">{{ getDateTimeFormatTimezone(item.createdAt) }}</span>
+      </template>
+      <template v-slot:[`item.updatedAt`]="{ item }">
+        <span class="one-line">{{ getDateTimeFormatTimezone(item.updatedAt) }}</span>
+      </template>
     </v-data-table>
+
+    <!-- DATA TABLE FOOTER -->
+    <div class="members-table-extensions">
+      <div style="width: 100%; max-width: 160px;">
+        <v-select
+          v-model="limit"
+          :items="[5, 10, 25]"
+          label="Limite por página"
+          outlined
+          dense
+          hide-details
+        ></v-select>
+      </div>
+      <v-pagination
+        v-model="page"
+        :length="totalPages"
+        :total-visible="5"
+        circle
+        class="affiliates-table-pagination"
+      ></v-pagination>
+    </div>
   </div>
 </template>
 
@@ -61,6 +94,7 @@ import { MembersSortOptions } from '@/constants/MembersSortOptions'
 import { errorGetMembers } from '@/utils/errors/errorGetMembers'
 import { showSnackbar } from '@/utils/showSnackbar'
 import MembersServices from '@/services/MembersServices'
+import moment from 'moment'
 export default {
   name: 'MembersTableComp',
   props: {

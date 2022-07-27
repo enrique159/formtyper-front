@@ -88,7 +88,7 @@ export default {
 }
 
 .v-list-item__icon > .v-icon {
-    color: rgba(0, 0, 0, 0.8) !important;
+    color: rgba(0, 0, 0, 0.4) !important;
 }
 
 .input-uppercase.v-input input {

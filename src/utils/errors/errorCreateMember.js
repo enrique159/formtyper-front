@@ -1,6 +1,6 @@
 import { showSnackbar } from '@/utils/showSnackbar'
 
-export function errorCreateAffiliate(response) {
+export function errorCreateMember(response) {
   if (response.errorText == 'unauthorized') {
     showSnackbar('No tienes permisos para realizar esta acción', 'red')
   } else if (response.errorText == 'expiredtoken') {
