@@ -58,6 +58,8 @@
 <script>
 import { CompactMembersHeader } from '@/constants/MembersHeadersDataTable'
 import { MembersSortOptions } from '@/constants/MembersSortOptions'
+import { errorGetMembers } from '@/utils/errors/errorGetMembers'
+import { showSnackbar } from '@/utils/showSnackbar'
 import MembersServices from '@/services/MembersServices'
 export default {
   name: 'MembersTableComp',
@@ -93,6 +95,20 @@ export default {
       doneTypingInterval: 1000,
     }
   },
+  watch: {
+    limit() {
+      this.getMembers()
+    },
+    page() {
+      this.getMembers()
+    },
+    sort() {
+      this.getMembers()
+    },
+  },
+  created() {
+    this.getMembers();
+  },
   computed: {
     getHeaders() {
       return this.headersCompact
@@ -122,7 +138,30 @@ export default {
       } else {
         this.order = 'desc';
       }
-      //this.getMembers();
+      this.getMembers();
+    },
+
+    // LLAMADA A API GET AFILIADOS
+    async getMembers() {
+      this.loading = true;
+      const response = await MembersServices.getMembers(
+        {
+          page: this.page, 
+          limit: this.limit, 
+          sort: this.sort.value,
+          search: this.search, 
+          order: this.order
+        });
+      if(response) {
+        if(response.status === 200) {
+          this.items = response.data.data;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        } else {
+          errorGetMembers(response);
+        }
+      } else showSnackbar('No es posible conectar al servidor', 'red')
+      this.loading = false;
     },
 
     // METODO PARA ABRIR Y EDITAR AFILIADO

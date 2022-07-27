@@ -6,6 +6,7 @@ import DashboardView from "@/views/main_views/DashboardView.vue";
 import AffiliatesView from "@/views/affiliates_view/AffiliatesView.vue";
 import AffiliatesCreateView from "@/views/affiliates_view/AffiliatesCreateView.vue";
 import MembersView from "@/views/members_view/MembersView.vue";
+import MembersCreateView from "@/views/members_view/MembersCreateView.vue";
 import { isLoggedIn } from '@/auth/index'
 
 Vue.use(VueRouter);
@@ -48,6 +49,14 @@ const routes = [
         path: "/members",
         name: "members",
         component: MembersView,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/members/new",
+        name: "member-new",
+        component: MembersCreateView,
         meta: {
           requiresAuth: true,
         },

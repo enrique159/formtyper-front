@@ -363,7 +363,7 @@ export default {
         required: (v) => !!v || "Este campo es requerido",
         minLength: (v) => (v && v.length >= 10) || "Debe contener al menos 10 caracteres",
         minLengthElector: (v) => (v && v.length == 18) || "Debe contener exactamente 18 caracteres",
-        minLengthPhone : (v) => (v.length == 10 || v == '') || "Debe contener 10 dígitos",
+        minLengthPhone : (v) => (v && v.length == 10 || v == '') || "Debe contener 10 dígitos",
         email: (v) => (/.+@.+\..+/.test(v) || v == '') || "Email no válido",
       },
 
