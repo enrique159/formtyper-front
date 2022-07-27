@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- DATA TABLE HEADER -->
-    <div class="affiliates-table-extensions flex-column py-4">
+    <div class="members-table-extensions flex-column py-4">
       <v-row>
         <v-col cols="5" sm="3">
           <v-select
@@ -47,79 +47,20 @@
       :items-per-page="limit"
       :loading="loading"
       @click:row="handleClick"
-      class="affiliates-table my-4"
+      class="members-table my-4"
       hide-default-footer
       mobile-breakpoint="0"
     >
-      <template v-slot:[`item.name`]="{ item }">
-        <span class="one-line">{{ item.name }} {{ item.fatherSurname }} {{ item.motherSurname }}</span>
-      </template>
-      <template v-slot:[`item.street`]="{ item }">
-        <span class="one-line">{{ item.street }} #{{ item.extnum }} / {{ item.intnum }}</span>
-      </template>
-      <template v-slot:[`item.neighborhood`]="{ item }">
-        <span class="one-line">{{ item.neighborhood }}</span>
-      </template>
-      <template v-slot:[`item.dateRegister`]="{ item }">
-        <span class="one-line">{{ getDateFormatTimezone(item.dateRegister) }}</span>
-      </template>
-      <template v-slot:[`item.createdAt`]="{ item }">
-        <span class="one-line">{{ getDateTimeFormatTimezone(item.createdAt) }}</span>
-      </template>
-      <template v-slot:[`item.updatedAt`]="{ item }">
-        <span class="one-line">{{ getDateTimeFormatTimezone(item.updatedAt) }}</span>
-      </template>
     </v-data-table>
-
-    <!-- DATA TABLE FOOTER -->
-    <div class="affiliates-table-extensions">
-      <div style="width: 100%; max-width: 160px;">
-        <v-select
-          v-model="limit"
-          :items="[5, 10, 25]"
-          label="Limite por página"
-          outlined
-          dense
-          hide-details
-        ></v-select>
-      </div>
-      <v-btn-toggle
-        v-model="typeHeaders"
-        tile
-        dense
-        color="primary accent-3"
-        group
-      >
-        <v-btn class="br-small" value="Compacto">
-          Compacto
-        </v-btn>
-        <v-btn class="br-small" value="Direccion">
-          Dirección
-        </v-btn>
-        <v-btn class="br-small" value="Detallado">
-          Detallado
-        </v-btn>
-      </v-btn-toggle>
-      <v-pagination
-        v-model="page"
-        :length="totalPages"
-        :total-visible="5"
-        circle
-        class="affiliates-table-pagination"
-      ></v-pagination>
-    </div>
   </div>
 </template>
 
 <script>
-import { CompactAffiliatesHeader, AddressAffiliatesHeader, FullAffiliatesHeader } from '@/constants/AffiliatesHeadersDataTable'
-import AffiliatesServices from '@/services/AffiliatesServices'
-import { AffiliatesSortOptions } from '@/constants/AffiliatesSortOptions'
-import { errorGetAffiliates } from '@/utils/errors/errorGetAffiliates'
-import { showSnackbar } from '@/utils/showSnackbar'
-import moment from 'moment'
+import { CompactMembersHeader } from '@/constants/MembersHeadersDataTable'
+import { MembersSortOptions } from '@/constants/MembersSortOptions'
+import MembersServices from '@/services/MembersServices'
 export default {
-  name: 'AffiliatesTableComp',
+  name: 'MembersTableComp',
   props: {
     updateRegister: {
       type: Object,
@@ -135,14 +76,12 @@ export default {
       typeHeaders: 'Compacto',
       tableFormats : [ 'Compacto', 'Detallado' ],
       search: '',
-      headersCompact: CompactAffiliatesHeader,
-      headersFull: FullAffiliatesHeader,
-      headersAddress: AddressAffiliatesHeader,
+      headersCompact: CompactMembersHeader,
       page: 1,
       limit: 10,
       totalItems: 0,
       totalPages: 0,
-      sortOptions: AffiliatesSortOptions,
+      sortOptions: MembersSortOptions,
       sort: { text: 'Fecha de creación', value: 'createdAt' },
       order: 'desc',
       items: [],
@@ -154,29 +93,9 @@ export default {
       doneTypingInterval: 1000,
     }
   },
-  watch: {
-    limit() {
-      this.getAffiliates()
-    },
-    page() {
-      this.getAffiliates()
-    },
-    sort() {
-      this.getAffiliates()
-    },
-  },
-  created() {
-    this.getAffiliates();
-  },
   computed: {
     getHeaders() {
-      if(this.typeHeaders === 'Compacto') {
-        return this.headersCompact;
-      } else if(this.typeHeaders === 'Detallado') {
-        return this.headersFull;
-      } else if(this.typeHeaders === 'Direccion') {
-        return this.headersAddress;
-      } else return this.headersCompact;
+      return this.headersCompact
     },
     showProp: {
       get() {
@@ -203,30 +122,7 @@ export default {
       } else {
         this.order = 'desc';
       }
-      this.getAffiliates();
-    },
-    
-    // LLAMADA A API GET AFILIADOS
-    async getAffiliates() {
-      this.loading = true;
-      const response = await AffiliatesServices.getAffiliates(
-        {
-          page: this.page, 
-          limit: this.limit, 
-          sort: this.sort.value,
-          search: this.search, 
-          order: this.order
-        });
-      if(response) {
-        if(response.status === 200) {
-          this.items = response.data.data;
-          this.totalItems = response.data.totalItems;
-          this.totalPages = response.data.totalPages;
-        } else {
-          errorGetAffiliates(response);
-        }
-      } else showSnackbar('No es posible conectar al servidor', 'red')
-      this.loading = false;
+      //this.getMembers();
     },
 
     // METODO PARA ABRIR Y EDITAR AFILIADO
@@ -269,13 +165,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.affiliates-table {
+.members-table {
   padding: 8px 16px;
   border-radius: 1rem;
   box-shadow: var(--bs-normal);
 }
 
-.affiliates-table-extensions {
+.members-table-extensions {
   padding: 8px 16px;
   border-radius: 1rem;
   background-color: var(--color-white);

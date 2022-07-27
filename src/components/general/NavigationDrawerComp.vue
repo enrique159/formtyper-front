@@ -34,11 +34,11 @@
         </v-list-item-icon>
         <v-list-item-title>Afiliados</v-list-item-title>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item @click="openView('members')">
         <v-list-item-icon>
           <v-icon>mdi-account-supervisor-circle</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>Asociados</v-list-item-title>
+        <v-list-item-title>Miembros</v-list-item-title>
       </v-list-item>
       <v-list-item link>
         <v-list-item-icon>
