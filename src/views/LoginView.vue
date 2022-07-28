@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import AuthServices from '@/services/AuthServices';
+import AuthServices from '@/services/authServices';
 import { setAuthToken, setRememberSesion, setUser } from "../auth/index";
 import { errorAuthUser} from "@/utils/errors/errorAuthUser";
 import { showSnackbar } from "@/utils/showSnackbar";
