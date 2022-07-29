@@ -12,7 +12,7 @@
     >
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-    <router-view />
+    <router-view class="pt-2" />
   </div>
 </template>
 
