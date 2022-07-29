@@ -49,6 +49,7 @@
   --img-scale: scale(1.1);
 
   /*========== box shadow ==========*/
+  --bs-light: 0 0px 24px rgba(0, 0, 0, 0.03);
   --bs-normal: 0px 0px 24px rgba(0, 0, 0, 0.07);
   // --bs-primary: 0 0.5rem 1rem 0.1rem #0067f84d;
   // --bs-secondary: 0 0.5rem 1rem 0.1rem #0311499d;
@@ -193,6 +194,9 @@ input {
 .tw-regular { font-weight: var(--font-regular) !important; }
 .tw-light { font-weight: var(--font-light) !important; }
 .tw-thin { font-weight: var(--font-thin) !important; }
+
+// TEXT TRANSFORM
+.tt-underline { text-decoration: underline !important; }
 
 // FONT FAMILY
 .ff-general { font-family: var(--general-font); }
