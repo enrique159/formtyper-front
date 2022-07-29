@@ -57,6 +57,17 @@
       <template v-slot:[`item.birthDate`]="{ item }">
         <span class="one-line">{{ getDateFormatTimezone(item.birthDate) }}</span>
       </template>
+      <template v-slot:[`item.address`]="{ item }">
+        <span class="one-line">{{ item.address }}</span>
+      </template>
+      <template v-slot:[`item.active`]="{ item }">
+        <v-chip v-if="item.active" color="green" text-color="white" small>
+          <span class="tc-white">activo</span>
+        </v-chip>
+        <v-chip v-else color="orange" text-color="white" small>
+          <span class="tc-white">inactivo</span>
+        </v-chip>
+      </template>
       <template v-slot:[`item.createdAt`]="{ item }">
         <span class="one-line">{{ getDateTimeFormatTimezone(item.createdAt) }}</span>
       </template>

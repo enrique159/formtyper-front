@@ -1,4 +1,18 @@
 export const currentVersion = {
+  version: '1.2.2',
+  date: 'Viernes 29 de Julio de 2022',
+  description: 
+    'Se agregó Editar y Eliminar en Miembros. Ahora se puede editar y elminar un miembro, al igual que desactivarlo.',
+  details: [
+    "Editar registro de Miembro al dar click en la linea de la tabla",
+    "Eliminar registro de Miembro al dar click en la opción Eliminar dentro de la edición del registro"
+  ],
+  minorDetails: [
+    "Corrección de errores y mejoras"
+  ]
+}
+
+export const version_1_2_1 = {
   version: '1.2.1',
   date: 'Viernes 29 de Julio de 2022',
   description: 

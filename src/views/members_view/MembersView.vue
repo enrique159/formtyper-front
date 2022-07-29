@@ -19,18 +19,21 @@
         v-on:updateRegister="updateRegister = $event"
       />
     </v-container>
+    <MembersEditComp v-if="showEdit" :show="showEdit" :updateRegister="updateRegister" v-on:updateShow="showEdit = $event"/>
   </div>
 </template>
 
 <script>
 import RouteDirectoryComp from '@/components/general/RouteDirectoryComp.vue'
 import MembersTableComp from '@/components/members_view/MembersTableComp.vue'
+import MembersEditComp from '@/components/members_view/MembersEditComp.vue'
 export default {
   name: 'MembersView',
   metaInfo: { title: 'Miembros' },
   components: {
     RouteDirectoryComp,
     MembersTableComp,
+    MembersEditComp
   },
   data() {
     return {

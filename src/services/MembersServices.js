@@ -12,4 +12,16 @@ export default {
       .then(response => response)
       .catch(error => error.response);
   },
+
+  updateMember(member) {
+    return axios.put(`/members/update/${member._id}`, member)
+      .then(response => response)
+      .catch(error => error.response);
+  },
+
+  deleteMember(idMember) {
+    return axios.delete(`/members/delete/${idMember}`)
+      .then(response => response)
+      .catch(error => error.response);
+  }
 }

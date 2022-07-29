@@ -165,7 +165,7 @@
                 </v-menu>
               </v-col>
 
-              <!-- CALLE -->
+              <!-- PROFESION -->
               <v-col cols="6" sm="6" class="pb-0">
                 <v-text-field
                   v-model="register.profession"

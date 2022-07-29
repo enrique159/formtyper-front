@@ -1,5 +1,5 @@
 <template>
-  <div class="affiliates-edit-comp fade-left px-3 px-sm-8 py-4" :class="{ active: showEffect, 'fade-right': exit }">
+  <div class="members-edit-comp fade-left px-3 px-sm-8 py-4" :class="{ active: showEffect, 'fade-right': exit }">
     <v-container fluid>
       <div class="d-flex align-center">
         <v-btn color="light" class="mr-3" icon depressed @click="cancel()">
@@ -9,7 +9,7 @@
       </div>
     </v-container>
     <v-container class="px-8 px-sm-3 mb-6 mb-sm-0" style="height: 100%;">
-      <v-form ref="formEditAffiliate" v-model="validForm" lazy-validation class="d-flex flex-column justify-space-between" style="height: 100%">
+      <v-form ref="formEditMember" v-model="validForm" lazy-validation class="d-flex flex-column justify-space-between" style="height: 100%">
         <v-row class="mb-8">
           <v-col cols="12" sm="3">
             <v-row>
@@ -40,12 +40,12 @@
 
           <v-col cols="12" sm="9">
             <v-row class="mb-6">
-              <!-- CLAVE DE ELECTOR / CURP -->
+              <!-- CLAVE DE ELECTOR -->
               <v-col cols="12" class="pb-0">
                 <v-text-field
-                  v-model="register.electoralKeyCurp"
-                  label="Clave de Elector / CURP"
-                  @keypress="validateNumberText($event, register.electoralKeyCurp, 18)"
+                  v-model="register.electoralKey"
+                  label="Clave de Elector"
+                  @keypress="validateNumberText($event, register.electoralKey, 18)"
                   :counter="18"
                   :rules="[rules.required, rules.minLengthElector]"
                   class="input-uppercase"
@@ -55,68 +55,28 @@
                 ></v-text-field>
               </v-col>
 
-              <!-- FECHA DE REGISTRO -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-menu
-                  ref="menuFechaRegistro"
-                  v-model="menuFechaRegistro"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      :value="computedDateFormatted"
-                      label="Fecha de registro"
-                      :rules="[rules.required]"
-                      prepend-inner-icon="mdi-calendar"
-                      readonly
-                      required
-                      outlined
-                      dense
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="register.dateRegister"
-                    @input="menuFechaRegistro = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-
-              <!-- Tipo de registro -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-select
-                  v-model="register.typeRegister"
-                  label="Tipo de registro"
-                  :items="['Afiliación', 'Ratificación']"
-                  dense
-                  outlined
-                ></v-select>
-              </v-col>
-
-              <!-- DISTRITO FEDERAL -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-select
-                  v-model="register.federalDistrict"
-                  label="Distrito Federal"
-                  :items="[1, 2]"
-                  prepend-inner-icon="mdi-pound"
+              <!-- CURP -->
+              <v-col cols="12" sm="8" class="pb-0">
+                <v-text-field
+                  v-model="register.curp"
+                  label="CURP"
+                  @keypress="validateNumberText($event, register.curp, 18)"
+                  :counter="18"
+                  :rules="[rules.required, rules.minLengthElector]"
+                  class="input-uppercase"
                   outlined
                   dense
                   required
-                ></v-select>
+                ></v-text-field>
               </v-col>
 
-              <!-- SECCION ELECTORAL -->
-              <v-col cols="6" sm="3" class="pb-0">
+              <!-- # AFILIACION -->
+              <v-col cols="6" sm="4" class="pb-0">
                 <v-text-field
-                  v-model="register.electoralSection"
-                  label="Sección Electoral"
+                  v-model="register.memberId"
+                  label="No. de afiliación"
                   :rules="[rules.required]"
-                  @keypress="validateNumber($event, register.electoralSection, 4)"
+                  @keypress="validateNumber($event, register.memberId, 6)"
                   prepend-inner-icon="mdi-pound"
                   outlined
                   dense
@@ -171,89 +131,57 @@
                 ></v-text-field>
               </v-col>
 
-              <!-- CALLE -->
-              <v-col cols="12" sm="8" class="pb-0">
+              <!-- DIRECCION -->
+              <v-col cols="12" sm="12" class="pb-0">
                 <v-text-field
-                  v-model="register.street"
+                  v-model="register.address"
                   :rules="[rules.required]"
-                  @keypress="validateLength($event, register.street, 100)"
+                  @keypress="validateLength($event, register.street, 200)"
                   prepend-inner-icon="mdi-sign-direction"
-                  label="Calle"
+                  label="Dirección"
                   outlined
                   dense
                   required
                 ></v-text-field>
               </v-col>
 
-              <!-- NO.EXT -->
-              <v-col cols="6" sm="2" class="pb-0">
-                <v-text-field
-                  v-model="register.extnum"
-                  label="No. Ext"
-                  @keypress="validateNumberText($event, register.extnum, 6)"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
+              <!-- FECHA DE NACIMIENTO -->
+              <v-col cols="6" sm="6" class="pb-0">
+                <v-menu
+                  ref="menuFechaNacimiento"
+                  v-model="menuFechaNacimiento"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      :value="computedDateFormatted"
+                      label="Fecha de nacimiento"
+                      :rules="[]"
+                      prepend-inner-icon="mdi-calendar"
+                      readonly
+                      outlined
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="register.birthDate"
+                    @input="menuFechaRegistro = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
 
-              <!-- NO.INT -->
-              <v-col cols="6" sm="2" class="pb-0">
+              <!-- PROFESION -->
+              <v-col cols="6" sm="6" class="pb-0">
                 <v-text-field
-                  v-model="register.intnum"
-                  label="No. Int"
-                  @keypress="validateNumberText($event, register.intnum, 6)"
+                  v-model="register.profession"
                   :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- COLONIA -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.neighborhood"
-                  label="Colonia"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- CIUDAD -->
-              <v-col cols="12" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.city"
-                  label="Ciudad"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- MUNICIPIO -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.township"
-                  label="Municipio"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- CP -->
-              <v-col cols="6" sm="2" class="pb-0">
-                <v-text-field
-                  v-model="register.cp"
-                  label="C.P."
-                  :rules="[rules.required]"
-                  @keypress="validateNumber($event, register.cp, 5)"
+                  @keypress="validateLength($event, register.profession, 60)"
+                  label="Profesión"
                   outlined
                   dense
                   required
@@ -271,22 +199,9 @@
               <!-- TELEFONO CELULAR -->
               <v-col cols="12" sm="4" class="pb-0">
                 <v-text-field
-                  v-model="register.cellPhoneNumber"
+                  v-model="register.phoneNumber"
                   label="Teléfono celular"
                   prepend-inner-icon="mdi-phone"
-                  :rules="[rules.minLengthPhone]"
-                  @keypress="validateNumber($event, register.cellPhoneNumber, 10)"
-                  outlined
-                  dense
-                ></v-text-field>
-              </v-col>
-
-              <!-- TELEFONO CASA -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.phoneNumber"
-                  label="Teléfono de casa"
-                  prepend-inner-icon="mdi-phone-classic"
                   :rules="[rules.minLengthPhone]"
                   @keypress="validateNumber($event, register.phoneNumber, 10)"
                   outlined
@@ -304,7 +219,19 @@
                   @keypress="validateEmail($event, register.email, 30)"
                   outlined
                   dense
+                  required
                 ></v-text-field>
+              </v-col>
+
+              <!-- ACTIVO -->
+              <v-col cols="12" sm="4" class="pb-0"> 
+                <v-switch
+                  v-model="register.active"
+                  class="mt-1"
+                  hide-details
+                  inset
+                  label="Miembro activo"
+                ></v-switch>
               </v-col>
             </v-row>
           </v-col>
@@ -316,7 +243,7 @@
             color="error"
             text
             class="mr-4"
-            @click="deleteAffiliate()"
+            @click="deleteMember()"
           >
             <v-icon style="font-size: 18px">mdi-trash-can-outline</v-icon>
             <span class="d-none d-sm-flex tc-error">Eliminar</span>
@@ -345,29 +272,29 @@
 
       </v-form>
     </v-container>
-    <AffiliatesDeleteDialogComp :show="deleteDialog" :affiliate="register" v-on:updateShow="deleteDialog = $event" />
+    <MembersDeleteDialogComp :show="deleteDialog" :member="register" v-on:updateShow="deleteDialog = $event"/>
   </div>
 </template>
 
 <script>
 import { validateNumber, validateText, validateNumberText, validateEmail } from "@/utils//keyPressValidate";
-import AffiliatesDeleteDialogComp from "@/components/affiliates_view/AffiliatesDeleteDialogComp";
-import AffiliatesServices from '@/services/AffiliatesServices';
+import MembersDeleteDialogComp from "@/components/members_view/MembersDeleteDialogComp";
+import MembersServices from '@/services/MembersServices';
 import UserServices from '@/services/UserServices';
-import { errorEditAffiliate } from "@/utils/errors/errorEditAffiliate";
+import { errorEditMember } from "@/utils/errors/errorEditMember";
 import { errorGetUser } from "@/utils/errors/errorGetUser";
 import { showSnackbar } from "@/utils/showSnackbar";
 import moment from 'moment';
 export default {
-  name: 'AffiliatesEditComp',
+  name: 'MembersEditComp',
   components: {
-    AffiliatesDeleteDialogComp
+    MembersDeleteDialogComp
   },
   data() {
     return {
       exit: false,
       showEffect: false,
-      menuFechaRegistro: false,
+      menuFechaNacimiento: false,
       validForm: false,
       loading: false,
       deleteDialog: false,
@@ -375,7 +302,7 @@ export default {
         required: (v) => !!v || "Este campo es requerido",
         minLength: (v) => (v && v.length >= 10) || "Debe contener al menos 10 caracteres",
         minLengthElector: (v) => (v && v.length == 18) || "Debe contener exactamente 18 caracteres",
-        minLengthPhone : (v) => (v.length == 10 || v == '') || "Debe contener 10 dígitos",
+        minLengthPhone : (v) => (v && v.length == 10 || v == '') || "Debe contener 10 dígitos",
         email: (v) => (/.+@.+\..+/.test(v) || v == '') || "Email no válido",
       },
       register: {},
@@ -396,7 +323,8 @@ export default {
   async created() {
     // clone updateRegister to register without reference
     this.register = JSON.parse(JSON.stringify(this.updateRegister));
-    this.register.dateRegister = new Date(this.register.dateRegister || Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)
+    this.register.phoneNumber = !!this.register.phoneNumber ? this.register.phoneNumber.toString() : '';
+    this.register.birthDate = new Date(this.register.birthDate || Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)
     this.userCreator = await this.getUser(this.register.createdBy);
     this.register.createdBy != this.register.updatedBy ? this.userModifier = await this.getUser(this.register.updatedBy) : this.userModifier = this.userCreator;
   },
@@ -407,7 +335,7 @@ export default {
   },
   computed: {
     computedDateFormatted() {
-      return this.formatDate(this.register.dateRegister);
+      return this.formatDate(this.register.birthDate);
     },
     showProp: {
       get() {
@@ -420,27 +348,27 @@ export default {
   },
   methods: {
     async validate() {
-      await this.$refs.formEditAffiliate.validate();
+      await this.$refs.formEditMember.validate();
       if(!!this.validForm) {
-        this.updateAffiliate();
+        this.updateMember();
       }
     },
 
-    async updateAffiliate() {
+    async updateMember() {
       this.loading = true;
       const delay = ms => new Promise(res => setTimeout(res, ms));
       await delay(1000);
-      const response = await AffiliatesServices.updateAffiliate(this.register)
+      const response = await MembersServices.updateMember(this.register)
       if(response) {
         if(response.status === 200) {
           showSnackbar('Registro actualizado con éxito', 'success');
           this.exit = true;
           setTimeout(() => {
-            this.$parent.reloadAffiliates();
+            this.$parent.reloadMembers();
             this.showProp = false;
           }, 200);
         } else {
-          errorEditAffiliate(response)
+          errorEditMember(response)
         }
       } else showSnackbar('No hay conexión con el servidor', 'red');
       this.loading = false;
@@ -457,18 +385,6 @@ export default {
       } else showSnackbar('No hay conexión con el servidor', 'red');
     },
 
-    deleteAffiliate() {
-      this.deleteDialog = true;
-    },
-
-    deleteSuccess() {
-      this.exit = true;
-      setTimeout(() => {
-        this.$parent.reloadAffiliates();
-        this.showProp = false;
-      }, 200);
-    },
-
     cancel() {
       this.exit = true;
       setTimeout(() => {
@@ -476,6 +392,17 @@ export default {
       }, 200);
     },
 
+    deleteMember() {
+      this.deleteDialog = true;
+    },
+
+    deleteSuccess() {
+      this.exit = true;
+      setTimeout(() => {
+        this.$parent.reloadMembers();
+        this.showProp = false;
+      }, 200);
+    },
 
     formatDate(date) {
       if (!date) return null;
@@ -537,12 +464,12 @@ export default {
         }
       }
     },
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.affiliates-edit-comp {
+.members-edit-comp {
   position: absolute;
   top: 0;
   right: -998px;
@@ -570,7 +497,7 @@ export default {
   }
 }
 
-.affiliates-edit-comp.active {
+.members-edit-comp.active {
   right: 0;
 }
 
