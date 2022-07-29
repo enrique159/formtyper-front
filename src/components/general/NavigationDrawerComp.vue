@@ -40,9 +40,9 @@
         </v-list-item-icon>
         <v-list-item-title>Miembros</v-list-item-title>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item @click="openView('reports')">
         <v-list-item-icon>
-          <v-icon>mdi-chart-donut-variant</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'reports'}">mdi-chart-donut-variant</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Reportes</v-list-item-title>
       </v-list-item>
@@ -51,23 +51,29 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item link>
+      <v-list-item @click="openView('users')">
         <v-list-item-icon>
-          <v-icon>mdi-account-circle</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'users'}">mdi-account-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Usuarios</v-list-item-title>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item @click="openView('stats')">
         <v-list-item-icon>
-          <v-icon>mdi-google-analytics</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'stats'}">mdi-google-analytics</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Estadisticas</v-list-item-title>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item @click="openView('settings')">
         <v-list-item-icon>
-          <v-icon>mdi-cog</v-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'settings'}">mdi-cog</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Configuración</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="openView('support')">
+        <v-list-item-icon>
+          <v-icon :class="{ 'icon-active' : getRouteName == 'support'}">mdi-lifebuoy</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Soporte</v-list-item-title>
       </v-list-item>
     </v-list>
 
