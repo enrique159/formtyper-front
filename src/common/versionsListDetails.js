@@ -1,4 +1,18 @@
 export const currentVersion = {
+  version: '1.2.1',
+  date: 'Viernes 29 de Julio de 2022',
+  description: 
+    'Nueva ventana de No tienes permisos creada para redirigir cuando un usuario intenta ingresar a un módulo que no tiene permisos de tipo Administrador.',
+  details: [
+    "Filtro de accesibilidad: Al querer acceder a un módulo que requiere ser tipo Administrador, se redirigirá a la página de No tienes permisos.",
+    "Filtro de opciones en el menú principal para diferentes tipos de usuario"
+  ],
+  minorDetails: [
+    "Corrección de errores y mejoras"
+  ]
+}
+
+export const version_1_1_1 = {
   version: '1.1.1',
   date: 'Viernes 29 de Julio de 2022',
   description: 

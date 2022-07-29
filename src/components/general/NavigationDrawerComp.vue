@@ -51,13 +51,13 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item @click="openView('users')">
+      <v-list-item @click="openView('users')" v-if="getUser.usertype === 'admin'">
         <v-list-item-icon>
           <v-icon :class="{ 'icon-active' : getRouteName == 'users'}">mdi-account-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Usuarios</v-list-item-title>
       </v-list-item>
-      <v-list-item @click="openView('stats')">
+      <v-list-item @click="openView('stats')" v-if="getUser.usertype === 'admin'">
         <v-list-item-icon>
           <v-icon :class="{ 'icon-active' : getRouteName == 'stats'}">mdi-google-analytics</v-icon>
         </v-list-item-icon>

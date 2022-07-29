@@ -12,7 +12,9 @@ import UsersView from "@/views/users_view/UsersView.vue";
 import StatsView from "@/views/stats_view/StatsView.vue";
 import SettingsView from "@/views/settings_view/SettingsView.vue";
 import SupportView from "@/views/support_view/SupportView.vue";
+import NotAllowedView from "@/views/NotAllowedView.vue";
 import { isLoggedIn } from '@/auth/index'
+import store from '@/store'
 
 Vue.use(VueRouter);
 
@@ -88,6 +90,7 @@ const routes = [
         component: StatsView,
         meta: {
           requiresAuth: true,
+          requiresAdmin: true,
         },
       },
       {
@@ -106,6 +109,14 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/not-allowed",
+        name: "not-allowed",
+        component: NotAllowedView,
+        meta: {
+          requiresAuth: true,
+        },
+      }
     ],
   },
   {
@@ -124,6 +135,7 @@ const router = new VueRouter({
   routes,
 });
 
+const usertype = store.getters.getUser.usertype;
 router.beforeEach(async (to, from, next) => {
   if (to.name == "login" && isLoggedIn()) {
     next({ path: "/" });
@@ -133,7 +145,14 @@ router.beforeEach(async (to, from, next) => {
       query: { redirect: to.fullPath },
     });
   } else {
-    next();
+    if(to.meta.requiresAdmin && usertype != "admin"){
+      next({
+        path: "/not-allowed",
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
   }
 });
 
