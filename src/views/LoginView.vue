@@ -106,7 +106,7 @@ export default {
           this.setUserLogin(response);
           this.$router.push('/dashboard');
         } else {
-          errorAuthUser(response);
+          errorAuthUser(response.data);
         }
       } else {
         showSnackbar('No hay conexión con el servidor', 'red');

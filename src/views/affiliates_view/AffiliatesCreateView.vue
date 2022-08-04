@@ -429,7 +429,7 @@ export default {
           showSnackbar('Registro creado con éxito', 'success');
           this.reset();
         } else {
-          errorCreateAffiliate(response)
+          errorCreateAffiliate(response.data)
         }
       } else showSnackbar('No hay conexión con el servidor', 'red');
       this.loading = false;

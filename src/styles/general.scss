@@ -3,6 +3,9 @@
   /* Hex color mode */
   --color-primary: #8915ef;
   --color-error: #ff5252;
+  --color-orange: #ff9800;
+  --color-green: #4caf50;
+  --color-blue: #2196f3;
 
   // COLORES DE SISTEMA
   --color-title: #231f20;
@@ -162,6 +165,11 @@ input {
 .bg-checker { background-color: var(--color-checker); } 
 .bg-background { background-color: var(--color-background); }
 .bg-transparent { background-color: transparent !important; }
+.bg-primary { background-color: var(--color-primary); }
+.bg-error { background-color: var(--color-error); }
+.bg-orange { background-color: var(--color-orange); }
+.bg-green { background-color: var(--color-green); }
+.bg-blue { background-color: var(--color-blue); }
 
 // BOX SHADOW
 .shadow-normal { box-shadow: var(--bs-normal); }
@@ -185,6 +193,7 @@ input {
 .ts-normal { font-size: var(--normal-font-size); }
 .ts-small { font-size: var(--small-font-size); }
 .ts-smaller { font-size: var(--smaller-font-size); }
+.ts-smallest { font-size: var(--smallest-font-size); }
 
 // TEXT WEIGHTS
 .tw-black { font-weight: var(--font-black) !important; }

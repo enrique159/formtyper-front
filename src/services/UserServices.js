@@ -12,4 +12,10 @@ export default {
     .then(response => response)
     .catch(error => error.response);
   }, 
+
+  getUsers() {
+    return axios.get(`/users`)
+    .then(response => response)
+    .catch(error => error.response);
+  }
 };

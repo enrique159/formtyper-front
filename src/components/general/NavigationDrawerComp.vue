@@ -51,7 +51,7 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item @click="openView('users')" v-if="getUser.usertype === 'admin'">
+      <v-list-item @click="openView('users')">
         <v-list-item-icon>
           <v-icon :class="{ 'icon-active' : getRouteName == 'users'}">mdi-account-circle</v-icon>
         </v-list-item-icon>

@@ -76,7 +76,7 @@ export default {
           this.$parent.deleteSuccess();
           this.showProp = false;
         } else {
-          errorDeleteAffiliate(response);
+          errorDeleteAffiliate(response.data);
         }
       } else showSnackbar("No hay conexión con el servidor", "red");
       this.loading = false;

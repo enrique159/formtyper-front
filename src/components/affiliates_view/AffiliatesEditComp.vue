@@ -459,7 +459,7 @@ export default {
             this.showProp = false;
           }, 200);
         } else {
-          errorEditAffiliate(response)
+          errorEditAffiliate(response.data)
         }
       } else showSnackbar('No hay conexión con el servidor', 'red');
       this.loading = false;
@@ -471,7 +471,7 @@ export default {
         if(response.status === 200) {
           return response.data
         } else {
-          errorGetUser(response)
+          errorGetUser(response.data)
         }
       } else showSnackbar('No hay conexión con el servidor', 'red');
     },

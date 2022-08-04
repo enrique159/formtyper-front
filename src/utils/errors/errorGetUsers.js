@@ -1,8 +1,8 @@
 import { showSnackbar } from '@/utils/showSnackbar'
 
-export function errorGetUser(response) {
+export function errorGetUsers(response) {
   if (response.error == 'unauthorized') {
-    showSnackbar('No tienes permisos para r', 'red')
+    showSnackbar('No tienes permisos para realizar esta acción', 'red')
   } else if (response.error == 'expiredtoken') {
     showSnackbar('Tu sesión ha expirado, vuelve a iniciar sesión', 'red')
   } else if (response.error == 'internalError') {

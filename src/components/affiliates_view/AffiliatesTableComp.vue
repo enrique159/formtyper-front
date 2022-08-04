@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { CompactAffiliatesHeader, AddressAffiliatesHeader, FullAffiliatesHeader } from '@/constants/AffiliatesHeadersDataTable'
+import { CompactAffiliatesHeader, AddressAffiliatesHeader, FullAffiliatesHeader } from '@/constants/headers/AffiliatesHeadersDataTable'
 import AffiliatesServices from '@/services/AffiliatesServices'
 import { AffiliatesSortOptions } from '@/constants/AffiliatesSortOptions'
 import { errorGetAffiliates } from '@/utils/errors/errorGetAffiliates'
@@ -223,7 +223,7 @@ export default {
           this.totalItems = response.data.totalItems;
           this.totalPages = response.data.totalPages;
         } else {
-          errorGetAffiliates(response);
+          errorGetAffiliates(response.data);
         }
       } else showSnackbar('No es posible conectar al servidor', 'red')
       this.loading = false;

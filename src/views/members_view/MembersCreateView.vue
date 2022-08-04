@@ -320,7 +320,7 @@ export default {
           showSnackbar('Registro creado con éxito', 'success');
           this.reset();
         } else {
-          errorCreateMember(response)
+          errorCreateMember(response.data)
         }
       } else showSnackbar('No hay conexión con el servidor', 'red');
       this.loading = false;

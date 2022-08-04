@@ -3,16 +3,44 @@
     <v-container>
       <h2>Usuarios</h2>
     </v-container>
-    <div class="centered-div">
-      <h4 class="tc-text-light">Módulo en construcción</h4>
-    </div>
+    <v-container>
+      <div class="d-flex justify-space-between align-center flex-wrap">
+        <MyUserInfoComp />
+        <v-btn class="d-sm-flex d-none" depressed color="primary" disabled v-if="user.usertype == 'admin'">
+          <v-icon>mdi-plus</v-icon>
+          Nuevo usuario
+        </v-btn>
+      </div>
+      <div class="d-flex justify-center align-center d-flex d-sm-none mt-5">
+        <v-btn depressed color="primary">
+          <v-icon>mdi-plus</v-icon>
+          Nuevo usuario
+        </v-btn>
+      </div>
+    </v-container>
+    <v-container>
+      <UsersTableComp v-if="user.usertype == 'admin'" />
+    </v-container>
   </div>
 </template>
 
 <script>
+import MyUserInfoComp from '@/components/users_view/MyUserInfoComp.vue'
+import UsersTableComp from '@/components/users_view/UsersTableComp.vue'
+import { mapGetters } from 'vuex'
+import { computed } from 'vue'
 export default {
   name: 'UsersView',
   metaInfo: { title: 'Usuarios' },
+  components: {
+    MyUserInfoComp,
+    UsersTableComp
+  },
+  computed: {
+    ...mapGetters({
+      user: 'getUser'
+    })
+  }
 }
 </script>
 

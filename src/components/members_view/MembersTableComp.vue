@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { CompactMembersHeader } from '@/constants/MembersHeadersDataTable'
+import { CompactMembersHeader } from '@/constants/headers/MembersHeadersDataTable'
 import { MembersSortOptions } from '@/constants/MembersSortOptions'
 import { errorGetMembers } from '@/utils/errors/errorGetMembers'
 import { showSnackbar } from '@/utils/showSnackbar'
@@ -203,7 +203,7 @@ export default {
           this.totalItems = response.data.totalItems;
           this.totalPages = response.data.totalPages;
         } else {
-          errorGetMembers(response);
+          errorGetMembers(response.data);
         }
       } else showSnackbar('No es posible conectar al servidor', 'red')
       this.loading = false;

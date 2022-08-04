@@ -1,4 +1,20 @@
 export const currentVersion = {
+  version: '1.3.1',
+  date: 'Jueves 04 de Agosto de 2022',
+  description: 
+    'Se ha agregado el módulo de Usuarios en el cual se puede ver la lista de los usuarios, al igual que tu perfil de usuario',
+  details: [
+    'Nueva tarjeta de Mi Usuario con botón de Editar',
+    'Nueva tabla de usuarios',
+    'Nuevo Boton de Nuevo Usuario',
+  ],
+  minorDetails: [
+    "Se corrigió un bug que no mostraba los errores del servidor correctamente",
+    "Cambios y mejoras"
+  ]
+}
+
+export const version_1_2_3 = {
   version: '1.2.3',
   date: 'Miércoles 03 de Agosto de 2022',
   description: 
