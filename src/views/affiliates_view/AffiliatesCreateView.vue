@@ -201,35 +201,39 @@
                 ></v-text-field>
               </v-col>
 
+              <!-- MUNICIPIO -->
+              <v-col cols="6" sm="3" class="pb-0">
+                <v-select
+                  v-model="register.township"
+                  label="Municipio"
+                  :rules="[rules.required]"
+                  @change="changeTowns()"
+                  :items="townships"
+                  outlined
+                  dense
+                  required
+                ></v-select>
+              </v-col>
+
+              <!-- CIUDAD -->
+              <v-col cols="12" sm="3" class="pb-0">
+                <v-combobox
+                  v-model="register.city"
+                  label="Ciudad"
+                  :items="towns"
+                  :rules="[rules.required]"
+                  autocomplete="false"
+                  outlined
+                  dense
+                  required
+                ></v-combobox>
+              </v-col>
+
               <!-- COLONIA -->
               <v-col cols="12" sm="4" class="pb-0">
                 <v-text-field
                   v-model="register.neighborhood"
                   label="Colonia"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- CIUDAD -->
-              <v-col cols="12" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.city"
-                  label="Ciudad"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- MUNICIPIO -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.township"
-                  label="Municipio"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -341,6 +345,12 @@
 import RouteDirectoryComp from "@/components/general/RouteDirectoryComp.vue";
 import AffiliatesServices from '@/services/AffiliatesServices';
 import { validateNumber, validateText, validateNumberText, validateEmail } from "@/utils/keyPressValidate";
+import { municipiosList } from '@/constants/MunicipiosList';
+import { LaPazTownshipTowns } from '@/constants/towns/LaPazTownshipTowns';
+import { LosCabosTownshipTowns } from '@/constants/towns/LosCabosTownshipTowns';
+import { MulegeTownshipTowns } from '@/constants/towns/MulegeTownshipTowns';
+import { ComonduTownshipTowns } from '@/constants/towns/ComonduTownshipTowns';
+import { LoretoTownshipTowns } from '@/constants/towns/LoretoTownshipTowns';
 import { errorCreateAffiliate } from "@/utils/errors/errorCreateAffiliate";
 import { showSnackbar } from "@/utils/showSnackbar";
 export default {
@@ -354,6 +364,8 @@ export default {
       menuFechaRegistro: false,
       validForm: false,
       loading: false,
+      townships: municipiosList,
+      towns: [],
       routeItems: [
         { name: "Inicio", disabled: false, route: "/dashboard" },
         { name: "Afiliados", disabled: false, route: "/affiliates" },
@@ -448,6 +460,32 @@ export default {
       this.register.cellPhoneNumber = "";
       this.register.electoralKeyCurp = "";
       this.register.signed = true;
+    },
+
+
+    // Change Towns base on the selected Township
+    changeTowns() {
+      this.register.city = "";
+      const township = this.register.township;
+      switch(township) {
+        case "La Paz":
+          this.towns = LaPazTownshipTowns;
+          break;
+        case "Los Cabos":
+          this.towns = LosCabosTownshipTowns;
+          break;
+        case "Mulegé":
+          this.towns = MulegeTownshipTowns;
+          break;
+        case "Comondú":
+          this.towns = ComonduTownshipTowns;
+          break;
+        case "Loreto":
+          this.towns = LoretoTownshipTowns;
+          break;
+        default:
+          this.towns = [];
+      }
     },
 
     formatDate(date) {

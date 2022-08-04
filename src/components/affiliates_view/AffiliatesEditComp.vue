@@ -13,10 +13,10 @@
         <v-row class="mb-8">
           <v-col cols="12" sm="3">
             <v-row>
-              <v-col cols="6" sm="12">
+              <v-col cols="6" sm="12" v-if="userCreator !== undefined">
                 <h5 class="mb-2 tw-regular">Creado por</h5>
                 <div class="profile-user mb-4">
-                  <img :src="require(`@/assets/profile/profile_${userCreator.image || 1}.png`)"/>
+                  <img :src="require(`@/assets/profile/profile_${userCreator.image ?? 1}.png`)"/>
                   <div>
                     <h5 class="ts-text-light mb-0">{{ userCreator.name }} {{ userCreator.lastname}}</h5>
                     <p class="ts-small mb-0">{{ userCreator.username }}</p>
@@ -24,10 +24,10 @@
                   </div>
                 </div>
               </v-col>
-              <v-col cols="6" sm="12">
+              <v-col cols="6" sm="12" v-if="userModifier !== undefined">
                 <h5 class="mb-2 tw-regular">Modificado por</h5>
                 <div class="profile-user">
-                  <img :src="require(`@/assets/profile/profile_${userModifier.image || 1}.png`)"/>
+                  <img :src="require(`@/assets/profile/profile_${userModifier.image ?? 1}.png`)"/>
                   <div>
                     <h5 class="ts-text-light mb-0">{{ userModifier.name }} {{ userModifier.lastname}}</h5>
                     <p class="ts-small mb-0">{{ userModifier.username }}</p>
@@ -211,35 +211,37 @@
                 ></v-text-field>
               </v-col>
 
+              <!-- MUNICIPIO -->
+              <v-col cols="6" sm="3" class="pb-0">
+                <v-select
+                  v-model="register.township"
+                  label="Municipio"
+                  :rules="[rules.required]"
+                  :items="townships"
+                  outlined
+                  dense
+                  required
+                ></v-select>
+              </v-col>
+
+              <!-- CIUDAD -->
+              <v-col cols="12" sm="3" class="pb-0">
+                <v-combobox
+                  v-model="register.city"
+                  label="Ciudad"
+                  :rules="[rules.required]"
+                  :items="towns"
+                  outlined
+                  dense
+                  required
+                ></v-combobox>
+              </v-col>
+
               <!-- COLONIA -->
               <v-col cols="12" sm="4" class="pb-0">
                 <v-text-field
                   v-model="register.neighborhood"
                   label="Colonia"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- CIUDAD -->
-              <v-col cols="12" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.city"
-                  label="Ciudad"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- MUNICIPIO -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.township"
-                  label="Municipio"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -354,6 +356,12 @@ import { validateNumber, validateText, validateNumberText, validateEmail } from 
 import AffiliatesDeleteDialogComp from "@/components/affiliates_view/AffiliatesDeleteDialogComp";
 import AffiliatesServices from '@/services/AffiliatesServices';
 import UserServices from '@/services/UserServices';
+import { municipiosList } from '@/constants/MunicipiosList';
+import { LaPazTownshipTowns } from '@/constants/towns/LaPazTownshipTowns';
+import { LosCabosTownshipTowns } from '@/constants/towns/LosCabosTownshipTowns';
+import { MulegeTownshipTowns } from '@/constants/towns/MulegeTownshipTowns';
+import { ComonduTownshipTowns } from '@/constants/towns/ComonduTownshipTowns';
+import { LoretoTownshipTowns } from '@/constants/towns/LoretoTownshipTowns';
 import { errorEditAffiliate } from "@/utils/errors/errorEditAffiliate";
 import { errorGetUser } from "@/utils/errors/errorGetUser";
 import { showSnackbar } from "@/utils/showSnackbar";
@@ -368,6 +376,8 @@ export default {
       exit: false,
       showEffect: false,
       menuFechaRegistro: false,
+      townships: municipiosList,
+      towns: [],
       validForm: false,
       loading: false,
       deleteDialog: false,
@@ -375,7 +385,7 @@ export default {
         required: (v) => !!v || "Este campo es requerido",
         minLength: (v) => (v && v.length >= 10) || "Debe contener al menos 10 caracteres",
         minLengthElector: (v) => (v && v.length == 18) || "Debe contener exactamente 18 caracteres",
-        minLengthPhone : (v) => (v.length == 10 || v == '') || "Debe contener 10 dígitos",
+        minLengthPhone : (v) => (v && v.length == 10 || v == '') || "Debe contener 10 dígitos",
         email: (v) => (/.+@.+\..+/.test(v) || v == '') || "Email no válido",
       },
       register: {},
@@ -396,9 +406,18 @@ export default {
   async created() {
     // clone updateRegister to register without reference
     this.register = JSON.parse(JSON.stringify(this.updateRegister));
+
+    // Initialize the register fields correctly
     this.register.dateRegister = new Date(this.register.dateRegister || Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)
+    this.register.phoneNumber = this.register.phoneNumber?.toString() || "";
+    this.register.cellPhoneNumber = this.register.cellPhoneNumber?.toString() || "";
+
+    // Get the user creator and modifier
     this.userCreator = await this.getUser(this.register.createdBy);
     this.register.createdBy != this.register.updatedBy ? this.userModifier = await this.getUser(this.register.updatedBy) : this.userModifier = this.userCreator;
+
+    // Get the cities of the township
+    this.changeTowns();
   },
   mounted() { 
     setTimeout(() => {
@@ -476,6 +495,30 @@ export default {
       }, 200);
     },
 
+
+    // Change Towns base on the selected Township
+    changeTowns() {
+      const township = this.register.township;
+      switch(township) {
+        case "La Paz":
+          this.towns = LaPazTownshipTowns;
+          break;
+        case "Los Cabos":
+          this.towns = LosCabosTownshipTowns;
+          break;
+        case "Mulegé":
+          this.towns = MulegeTownshipTowns;
+          break;
+        case "Comondú":
+          this.towns = ComonduTownshipTowns;
+          break;
+        case "Loreto":
+          this.towns = LoretoTownshipTowns;
+          break;
+        default:
+          this.towns = [];
+      }
+    },
 
     formatDate(date) {
       if (!date) return null;

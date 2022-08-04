@@ -1,4 +1,18 @@
 export const currentVersion = {
+  version: '1.2.3',
+  date: 'Miércoles 03 de Agosto de 2022',
+  description: 
+    'En los formularios de registro de afiliados se agregaron el listado de las ciudades para los distintos municipios del estado.',
+  details: [
+    "Lista de municipios en Crear Afiliado y en Editar Afiliado",
+    "Lista de ciudades en Crear Afiliado y en Editar Afiliado dinámicamente según el municipio seleccionado",
+  ],
+  minorDetails: [
+    "Corrección de errores y mejoras"
+  ]
+}
+
+export const version_1_2_2 = {
   version: '1.2.2',
   date: 'Viernes 29 de Julio de 2022',
   description: 
