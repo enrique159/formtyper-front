@@ -202,7 +202,7 @@
               </v-col>
 
               <!-- MUNICIPIO -->
-              <v-col cols="6" sm="3" class="pb-0">
+              <v-col cols="12" sm="3" class="pb-0">
                 <v-select
                   v-model="register.township"
                   label="Municipio"
@@ -230,7 +230,7 @@
               </v-col>
 
               <!-- COLONIA -->
-              <v-col cols="12" sm="4" class="pb-0">
+              <v-col cols="6" sm="4" class="pb-0">
                 <v-text-field
                   v-model="register.neighborhood"
                   label="Colonia"
