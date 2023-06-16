@@ -24,10 +24,12 @@
             label="Contraseña"
             v-model="password"
             :rules="passwordRules"
-            type="password"
+            :disabled="loading"
+            :append-icon="showPass ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+            @click:append="() => (showPass = !showPass)"
+            :type="showPass ? 'text' : 'password'"
             outlined
             dense
-            :disabled="loading"
             required
             @keydown.enter="validate"
           ></v-text-field>
@@ -74,6 +76,7 @@ export default {
       rememberSession: false,
       loading: false,
       snackbar: false,
+      showPass: false,
       errorText: "",
       emailRules: [
         v => !!v || 'E-mail es requerido',
@@ -81,7 +84,7 @@ export default {
       ],
       passwordRules: [
         v => !!v || 'La contraseña es requerida',
-        v => v.length >= 8 || 'La contraseña debe tener al menos 6 caracteres',
+        v => v.length >= 8 || 'La contraseña debe tener al menos 8 caracteres',
       ],
     }
   },
@@ -98,8 +101,6 @@ export default {
     
     async signIn() {
       this.loading = true;
-      const delay = ms => new Promise(res => setTimeout(res, ms));
-      await delay(2000);
       const response = await AuthServices.loginUser({ email: this.email, password: this.password})
       if(response) {
         if(response.status === 200) {

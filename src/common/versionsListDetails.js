@@ -1,4 +1,19 @@
 export const currentVersion = {
+  version: '1.3.2',
+  date: 'Jueves 16 de Junio de 2023',
+  description: 
+    'Se ha agregado la opción de editar usuarios y eliminarlos.',
+  details: [
+    'Edición de usuarios',
+    'Edición de tu propio usuario',
+    'Eliminación de usuario',
+  ],
+  minorDetails: [
+    "Cambios y mejoras"
+  ]
+}
+
+export const version_1_3_1 = {
   version: '1.3.1',
   date: 'Jueves 04 de Agosto de 2022',
   description: 

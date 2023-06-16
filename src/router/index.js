@@ -9,6 +9,7 @@ import MembersView from "@/views/members_view/MembersView.vue";
 import MembersCreateView from "@/views/members_view/MembersCreateView.vue";
 import ReportsView from "@/views/reports_view/ReportsView.vue";
 import UsersView from "@/views/users_view/UsersView.vue";
+import UsersCreateView from "@/views/users_view/UsersCreateView.vue";
 import StatsView from "@/views/stats_view/StatsView.vue";
 import SettingsView from "@/views/settings_view/SettingsView.vue";
 import SupportView from "@/views/support_view/SupportView.vue";
@@ -80,6 +81,14 @@ const routes = [
         path: "/users",
         name: "users",
         component: UsersView,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/users/new",
+        name: "users-new",
+        component: UsersCreateView,
         meta: {
           requiresAuth: true,
         },

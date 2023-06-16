@@ -7,6 +7,8 @@ export function errorAuthUser(response) {
     showSnackbar('Usuario o contraseña incorrectos', 'red')
   } else if (response.error == 'userNotFound') {
     showSnackbar('No se encontró un usuario con esas credenciales', 'red')
+  } else if (response.error == 'userDeleted') {
+    showSnackbar('El usuario ha sido eliminado', 'red')
   } else {
     showSnackbar('Ocurrió un error de servidor', 'red')
   }
