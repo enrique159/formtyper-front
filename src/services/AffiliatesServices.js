@@ -23,5 +23,11 @@ export default {
     return axios.delete(`/affiliates/delete/${idAffiliate}`)
       .then(response => response)
       .catch(error => error.response);
+  },
+
+  getAffiliatesCount(startDate, endDate) {
+    return axios.get(`/affiliates/getRegisterCountsByTimePeriod/${startDate}/${endDate}`)
+      .then(response => response)
+      .catch(error => error.response);
   }
 }

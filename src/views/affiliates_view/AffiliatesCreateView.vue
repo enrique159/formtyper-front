@@ -21,7 +21,7 @@
           <v-col cols="12" sm="8">
             <v-row>
               <!-- CLAVE DE ELECTOR / CURP -->
-              <v-col cols="12" class="pb-0">
+              <!-- <v-col cols="12" class="pb-0">
                 <v-text-field
                   v-model="register.electoralKeyCurp"
                   label="Clave de Elector / CURP"
@@ -33,10 +33,49 @@
                   dense
                   required
                 ></v-text-field>
+              </v-col> -->
+
+              <!-- NOMBRE -->
+              <v-col cols="12" sm="6" md="4" class="pb-0">
+                <v-text-field
+                  v-model="register.name"
+                  label="Nombre"
+                  @keypress="validateText($event, register.name, 30)"
+                  :rules="[rules.required]"
+                  outlined
+                  dense
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <!-- APELLIDO PATERNO -->
+              <v-col cols="12" sm="6" md="4" class="pb-0">
+                <v-text-field
+                  v-model="register.fatherSurname"
+                  label="Apellido paterno"
+                  @keypress="validateText($event, register.fatherSurname, 30)"
+                  :rules="[rules.required]"
+                  outlined
+                  dense
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <!-- APELLIDO MATERNO -->
+              <v-col cols="12" sm="6" md="4" class="pb-0">
+                <v-text-field
+                  v-model="register.motherSurname"
+                  label="Apellido materno"
+                  @keypress="validateText($event, register.motherSurname, 30)"
+                  :rules="[rules.required]"
+                  outlined
+                  dense
+                  required
+                ></v-text-field>
               </v-col>
 
               <!-- FECHA DE REGISTRO -->
-              <v-col cols="6" sm="3" class="pb-0">
+              <v-col cols="6" sm="6" md="3" class="pb-0">
                 <v-menu
                   ref="menuFechaRegistro"
                   v-model="menuFechaRegistro"
@@ -48,7 +87,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       :value="computedDateFormatted"
-                      label="Fecha de registro"
+                      label="Cumpleaños"
                       :rules="[rules.required]"
                       prepend-inner-icon="mdi-calendar"
                       readonly
@@ -60,25 +99,25 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="register.dateRegister"
+                    v-model="register.birthdate"
                     @input="menuFechaRegistro = false"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
 
               <!-- Tipo de registro -->
-              <v-col cols="6" sm="3" class="pb-0">
+              <v-col cols="6" sm="6" md="3" class="pb-0">
                 <v-select
                   v-model="register.typeRegister"
                   label="Tipo de registro"
-                  :items="['Afiliación', 'Ratificación']"
+                  :items="['Simpatizante','Afiliación', 'Ratificación']"
                   dense
                   outlined
                 ></v-select>
               </v-col>
 
               <!-- DISTRITO FEDERAL -->
-              <v-col cols="6" sm="3" class="pb-0">
+              <!-- <v-col cols="6" sm="3" class="pb-0">
                 <v-select
                   v-model="register.federalDistrict"
                   label="Distrito Federal"
@@ -88,10 +127,10 @@
                   dense
                   required
                 ></v-select>
-              </v-col>
+              </v-col> -->
 
               <!-- SECCION ELECTORAL -->
-              <v-col cols="6" sm="3" class="pb-0">
+              <v-col cols="6" sm="6" md="3" class="pb-0">
                 <v-text-field
                   v-model="register.electoralSection"
                   label="Sección Electoral"
@@ -103,6 +142,46 @@
                   required
                 ></v-text-field>
               </v-col>
+
+              <!-- TELEFONO CELULAR -->
+              <v-col cols="6" sm="6" md="3" class="pb-0">
+                <v-text-field
+                  v-model="register.phoneNumber"
+                  label="Teléfono/celular"
+                  prepend-inner-icon="mdi-phone"
+                  :rules="[rules.minLengthPhone]"
+                  @keypress="validateNumber($event, register.phoneNumber, 10)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col>
+
+              <!-- TELEFONO CASA -->
+              <!-- <v-col cols="12" sm="4" class="pb-0">
+                <v-text-field
+                  v-model="register.phoneNumber"
+                  label="Teléfono de casa"
+                  prepend-inner-icon="mdi-phone-classic"
+                  :rules="[rules.minLengthPhone]"
+                  @keypress="validateNumber($event, register.phoneNumber, 10)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col> -->
+
+              <!-- EMAIL -->
+              <!-- <v-col cols="12" sm="6" md="3" class="pb-0">
+                <v-text-field
+                  v-model="register.email"
+                  label="Correo electrónico"
+                  prepend-inner-icon="mdi-email"
+                  :rules="[rules.email]"
+                  @keypress="validateEmail($event, register.email, 30)"
+                  outlined
+                  dense
+                  required
+                ></v-text-field>
+              </v-col> -->
 
             </v-row>
           </v-col>
@@ -116,53 +195,14 @@
         <v-row class="mb-8">
           <v-col cols="12" sm="4">
             <v-divider class="mb-3"></v-divider>
-            <h4>Información personal</h4>
+            <h4>Información de dirección</h4>
             <p class="ts-small tc-text-light">Llenar los campos relacionados a la persona</p>
           </v-col>
 
           <v-col cols="12" sm="8">
             <v-row>
-              <!-- NOMBRE -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.name"
-                  label="Nombre"
-                  @keypress="validateText($event, register.name, 30)"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- APELLIDO PATERNO -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.fatherSurname"
-                  label="Apellido paterno"
-                  @keypress="validateText($event, register.fatherSurname, 30)"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- APELLIDO MATERNO -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.motherSurname"
-                  label="Apellido materno"
-                  @keypress="validateText($event, register.motherSurname, 30)"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
               <!-- CALLE -->
-              <v-col cols="12" sm="8" class="pb-0">
+              <v-col cols="12" sm="6" md="8" class="pb-0">
                 <v-text-field
                   v-model="register.street"
                   :rules="[rules.required]"
@@ -176,11 +216,32 @@
               </v-col>
 
               <!-- NO.EXT -->
-              <v-col cols="6" sm="2" class="pb-0">
+              <v-col cols="6" sm="3" md="2" class="pb-0">
                 <v-text-field
                   v-model="register.extnum"
                   label="No. Ext"
                   @keypress="validateNumberText($event, register.extnum, 6)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col>
+
+              <!-- NO.INT -->
+              <v-col cols="6" sm="3" md="2" class="pb-0">
+                <v-text-field
+                  v-model="register.intnum"
+                  label="No. Int"
+                  @keypress="validateNumberText($event, register.intnum, 6)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col>
+
+              <!-- COLONIA -->
+              <v-col cols="6" sm="6" md="4" class="pb-0">
+                <v-text-field
+                  v-model="register.neighborhood"
+                  label="Colonia"
                   :rules="[rules.required]"
                   outlined
                   dense
@@ -188,13 +249,13 @@
                 ></v-text-field>
               </v-col>
 
-              <!-- NO.INT -->
-              <v-col cols="6" sm="2" class="pb-0">
+              <!-- CP -->
+              <v-col cols="6" sm="6" md="2" class="pb-0">
                 <v-text-field
-                  v-model="register.intnum"
-                  label="No. Int"
-                  @keypress="validateNumberText($event, register.intnum, 6)"
+                  v-model="register.cp"
+                  label="C.P."
                   :rules="[rules.required]"
+                  @keypress="validateNumber($event, register.cp, 5)"
                   outlined
                   dense
                   required
@@ -202,7 +263,7 @@
               </v-col>
 
               <!-- MUNICIPIO -->
-              <v-col cols="12" sm="3" class="pb-0">
+              <v-col cols="12" sm="6" md="3" class="pb-0">
                 <v-select
                   v-model="register.township"
                   label="Municipio"
@@ -216,7 +277,7 @@
               </v-col>
 
               <!-- CIUDAD -->
-              <v-col cols="12" sm="3" class="pb-0">
+              <v-col cols="12" sm="6" md="3" class="pb-0">
                 <v-combobox
                   v-model="register.city"
                   label="Ciudad"
@@ -227,31 +288,6 @@
                   dense
                   required
                 ></v-combobox>
-              </v-col>
-
-              <!-- COLONIA -->
-              <v-col cols="6" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.neighborhood"
-                  label="Colonia"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- CP -->
-              <v-col cols="6" sm="2" class="pb-0">
-                <v-text-field
-                  v-model="register.cp"
-                  label="C.P."
-                  :rules="[rules.required]"
-                  @keypress="validateNumber($event, register.cp, 5)"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
               </v-col>
 
             </v-row>
@@ -266,52 +302,38 @@
         <v-row>
           <v-col cols="12" sm="4">
             <v-divider class="mb-3"></v-divider>
-            <h4>Información de contacto</h4>
-            <p class="ts-small tc-text-light">Llena los campos de contacto de la persona</p>
+            <h4>Gestión social</h4>
+            <p class="ts-small tc-text-light">Agrega las observaciones y/o peticiones del registro</p>
           </v-col>
 
           <v-col cols="12" sm="8">
-            <v-row>
-              <!-- TELEFONO CELULAR -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.cellPhoneNumber"
-                  label="Teléfono celular"
-                  prepend-inner-icon="mdi-phone"
-                  :rules="[rules.minLengthPhone]"
-                  @keypress="validateNumber($event, register.cellPhoneNumber, 10)"
-                  outlined
+            <v-row v-for="(item, index) of register.requests" :key="`requests-${index}`">
+              <v-col cols="3" sm="4" md="3" class="pb-0">
+                <v-select
+                  v-model="register.requests[index].type"
+                  label="Tipo"
+                  :items="requestTypes"
                   dense
-                ></v-text-field>
+                  outlined
+                ></v-select>
               </v-col>
-
-              <!-- TELEFONO CASA -->
-              <v-col cols="12" sm="4" class="pb-0">
+              <v-col cols="9" sm="8" md="9" class="pb-0">
                 <v-text-field
-                  v-model="register.phoneNumber"
-                  label="Teléfono de casa"
-                  prepend-inner-icon="mdi-phone-classic"
-                  :rules="[rules.minLengthPhone]"
-                  @keypress="validateNumber($event, register.phoneNumber, 10)"
+                  v-model="register.requests[index].value"
+                  label="Observaciones"
                   outlined
                   dense
-                ></v-text-field>
-              </v-col>
-
-              <!-- EMAIL -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.email"
-                  label="Correo electrónico"
-                  prepend-inner-icon="mdi-email"
-                  :rules="[rules.email]"
-                  @keypress="validateEmail($event, register.email, 30)"
-                  outlined
-                  dense
-                  required
                 ></v-text-field>
               </v-col>
             </v-row>
+            <div class="d-flex gap-5">
+              <v-btn fab dark small color="primary" @click="addNewRequest()">
+                <v-icon> mdi-plus </v-icon>
+              </v-btn>
+              <v-btn fab dark small color="error" v-if="register.requests.length > 1" @click="removeLastRequest()">
+                <v-icon> mdi-minus </v-icon>
+              </v-btn>
+            </div>
           </v-col>
         </v-row>  
 
@@ -344,6 +366,7 @@
 <script>
 import RouteDirectoryComp from "@/components/general/RouteDirectoryComp.vue";
 import AffiliatesServices from '@/services/AffiliatesServices';
+import { RequestTypes, RequestTypesArray } from "@/constants/AffiliatesSortOptions";
 import { validateNumber, validateText, validateNumberText, validateEmail } from "@/utils/keyPressValidate";
 import { municipiosList } from '@/constants/MunicipiosList';
 import { LaPazTownshipTowns } from '@/constants/towns/LaPazTownshipTowns';
@@ -366,6 +389,7 @@ export default {
       loading: false,
       townships: municipiosList,
       towns: [],
+      requestTypes: RequestTypesArray,
       routeItems: [
         { name: "Inicio", disabled: false, route: "/dashboard" },
         { name: "Afiliados", disabled: false, route: "/affiliates" },
@@ -380,8 +404,8 @@ export default {
       },
 
       register: {
-        typeRegister: "Afiliación",
-        dateRegister: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
+        typeRegister: "Simpatizante",
+        birthdate: new Date(1980, 0, 1).toISOString().substr(0, 10),
         name: "",
         fatherSurname: "",
         motherSurname: "",
@@ -390,22 +414,25 @@ export default {
         intnum: "",
         neighborhood: "",
         city: "",
-        township: "",
+        township: "La Paz",
         cp: "",
-        federalDistrict: 1,
         electoralSection: "",
-        email: "",
         phoneNumber: "",
-        cellPhoneNumber: "",
-        electoralKeyCurp: "",
+        requests: [
+          { type: RequestTypes.Urbanismo, value: "" },
+        ],
+        // electoralKeyCurp: "",
         signed: true,
       }
     };
   },
   computed: {
     computedDateFormatted() {
-      return this.formatDate(this.register.dateRegister);
+      return this.formatDate(this.register.birthdate);
     },
+  },
+  mounted() {
+    this.changeTowns();
   },
   methods: {
     async validate() {
@@ -423,6 +450,7 @@ export default {
       this.loading = true;
       const delay = ms => new Promise(res => setTimeout(res, ms));
       await delay(1000);
+      this.clearEmptyRequests();
       const response = await AffiliatesServices.createAffiliate(this.register)
       if(response) {
         if(response.status === 200) {
@@ -441,8 +469,8 @@ export default {
     },
 
     setStartValues() {
-      this.register.dateRegister = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10);
-      this.register.typeRegister = "Afiliación";
+      this.register.birthdate = new Date(1980, 0, 1).toISOString().substr(0, 10);
+      this.register.typeRegister = "Simpatizante";
       this.register.name = "";
       this.register.fatherSurname = "";
       this.register.motherSurname = "";
@@ -451,14 +479,11 @@ export default {
       this.register.intnum = "";
       this.register.neighborhood = "";
       this.register.city = "";
-      this.register.township = "";
+      this.register.township = "La Paz";
       this.register.cp = "";
-      this.register.federalDistrict = "";
       this.register.electoralSection = "";
-      this.register.email = "";
       this.register.phoneNumber = "";
-      this.register.cellPhoneNumber = "";
-      this.register.electoralKeyCurp = "";
+      this.register.requests = [ { type: RequestTypes.Urbanismo, value: "" }, ];
       this.register.signed = true;
     },
 
@@ -492,6 +517,18 @@ export default {
       if (!date) return null;
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
+    },
+
+    addNewRequest() {
+      this.register.requests.push({ type: RequestTypes.Urbanismo, value: "" });
+    },
+
+    removeLastRequest() {
+      this.register.requests.pop();
+    },
+
+    clearEmptyRequests() {
+      this.register.requests = this.register.requests.filter(request => request.value !== "");
     },
 
     // Metodo para validar que el valor tecleado sea un numero

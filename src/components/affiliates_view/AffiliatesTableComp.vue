@@ -51,7 +51,7 @@
       hide-default-footer
       mobile-breakpoint="0"
     >
-      <template v-slot:[`item.name`]="{ item }">
+      <template v-slot:[`item.fullname`]="{ item }">
         <span class="one-line">{{ item.name }} {{ item.fatherSurname }} {{ item.motherSurname }}</span>
       </template>
       <template v-slot:[`item.street`]="{ item }">
@@ -60,8 +60,8 @@
       <template v-slot:[`item.neighborhood`]="{ item }">
         <span class="one-line">{{ item.neighborhood }}</span>
       </template>
-      <template v-slot:[`item.dateRegister`]="{ item }">
-        <span class="one-line">{{ getDateFormatTimezone(item.dateRegister) }}</span>
+      <template v-slot:[`item.birthdate`]="{ item }">
+        <span class="one-line">{{ getDateFormatTimezone(item.birthdate) }}</span>
       </template>
       <template v-slot:[`item.createdAt`]="{ item }">
         <span class="one-line">{{ getDateTimeFormatTimezone(item.createdAt) }}</span>
@@ -108,15 +108,50 @@
         class="affiliates-table-pagination"
       ></v-pagination>
     </div>
+
+    <v-container class="pa-0" v-show="!loading">
+      <v-row>
+        <!-- <v-col cols="12" sm="6" class="py-8">
+          <div class="action-card">
+            <v-select
+              v-model="timeOption"
+              :items="dateTimeOptions"
+              label="Periodo de tiempo"
+              outlined
+              dense
+              hide-details
+            ></v-select>
+            <apexchart type="bar" :options="options" :series="series"></apexchart>
+          </div>
+        </v-col> -->
+        <v-col cols="12" sm="6" class="py-8">
+          <div class="action-card">
+            <v-row>
+              <v-col cols="8">
+                <h4>Exportar los registros a hoja de cálculo</h4>
+                <p class="ts-small ma-0">Exporta los registros de la tabla a una hoja de cálculo de Excel.</p>
+              </v-col>
+              <v-col cols="4">
+                <v-btn color="#123123" @click="generateExcel()">
+                  <span class="tc-white">Exportar</span>
+                  <v-icon color="green darken-2 pl-6"> mdi-table-arrow-right </v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
 import { CompactAffiliatesHeader, AddressAffiliatesHeader, FullAffiliatesHeader } from '@/constants/headers/AffiliatesHeadersDataTable'
 import AffiliatesServices from '@/services/AffiliatesServices'
-import { AffiliatesSortOptions } from '@/constants/AffiliatesSortOptions'
+import { AffiliatesSortOptions, AffiliatesPeriodOptions, PeriodOptions } from '@/constants/AffiliatesSortOptions'
 import { errorGetAffiliates } from '@/utils/errors/errorGetAffiliates'
 import { showSnackbar } from '@/utils/showSnackbar'
+import * as XLSX from "xlsx";
 import moment from 'moment'
 export default {
   name: 'AffiliatesTableComp',
@@ -152,6 +187,22 @@ export default {
       loading: false,
       typingTimer: null,
       doneTypingInterval: 1000,
+
+      // Apexchart
+      timeOption: "last7Days",
+      dateTimeOptions: AffiliatesPeriodOptions,
+      options: {
+        chart: {
+          id: 'chart-registros-periodo'
+        },
+        xaxis: {
+          categories: this.getCategoriesByTimeOption
+        }
+      },
+      series: [{
+        name: 'series-1',
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+      }]
     }
   },
   watch: {
@@ -164,9 +215,13 @@ export default {
     sort() {
       this.getAffiliates()
     },
+    timeOption() {
+      this.getAffiliatesCount()
+    }
   },
   created() {
     this.getAffiliates();
+    //this.getAffiliatesCount();
   },
   computed: {
     getHeaders() {
@@ -194,6 +249,24 @@ export default {
         this.$emit('updateRegister', value);
       },
     },
+    getTimeFromTimeOption() {
+      if (this.timeOption === PeriodOptions.SEVEN_DAYS) return moment().subtract(7, 'days').format('YYYY-MM-DD');
+      if (this.timeOption === PeriodOptions.FIFTEEN_DAYS) return moment().subtract(15, 'days').format('YYYY-MM-DD');
+      if (this.timeOption === PeriodOptions.ONE_MONTH) return moment().subtract(1, 'months').format('YYYY-MM-DD');
+      if (this.timeOption === PeriodOptions.THREE_MONTHS) return moment().subtract(3, 'months').format('YYYY-MM-DD');
+      if (this.timeOption === PeriodOptions.SIX_MONTHS) return moment().subtract(6, 'months').format('YYYY-MM-DD');
+      if (this.timeOption === PeriodOptions.ONE_YEAR) return moment().subtract(1, 'years').format('YYYY-MM-DD');
+      return moment().subtract(7, 'days').format('YYYY-MM-DD');
+    },
+    getCategoriesByTimeOption() {
+      if (this.timeOption === PeriodOptions.SEVEN_DAYS) return ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+      if (this.timeOption === PeriodOptions.FIFTEEN_DAYS) return ['Semana 1', 'Semana 2', 'Semana 3'];
+      if (this.timeOption === PeriodOptions.ONE_MONTH) return ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
+      if (this.timeOption === PeriodOptions.THREE_MONTHS) return ['Mes 1', 'Mes 2', 'Mes 3'];
+      if (this.timeOption === PeriodOptions.SIX_MONTHS) return ['Semestre 1', 'Semestre 2'];
+      if (this.timeOption === PeriodOptions.ONE_YEAR) return ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto'];
+      return ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+    }
   },
   methods: {
     // METODO PARA CAMBIAR ORDER
@@ -263,6 +336,28 @@ export default {
 
     stopTimerSearch() {
       clearTimeout(this.typingTimer);
+    },
+
+    // Get Affiliates Count
+    async getAffiliatesCount() {
+      const endDateTime = moment().format('YYYY-MM-DDThh:mm:ss+00:00');
+      const response = await AffiliatesServices.getAffiliatesCount(this.getTimeFromTimeOption, endDateTime);
+      if(response) {
+        if(response.status === 200) {
+          console.log(response.data);
+        } else {
+          errorGetAffiliates(response.data);
+        }
+      } else showSnackbar('No es posible conectar al servidor', 'red')
+    },
+
+    // GENERAR EXPORTACION DE EXCEL
+    generateExcel() {
+      const data = this.items;
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Afiliados");
+      XLSX.writeFile(wb, "Afiliados.xlsx");
     }
   }
 }
@@ -288,5 +383,13 @@ export default {
     align-items: center;
     row-gap: 1rem;
   }
+}
+
+.action-card {
+  width: 100%;
+  height: fit-content;
+  padding: 2rem;
+  background-color: #ececec;
+  border-radius: 1rem;
 }
 </style>

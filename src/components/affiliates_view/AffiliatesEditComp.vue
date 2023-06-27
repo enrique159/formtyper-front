@@ -41,7 +41,7 @@
           <v-col cols="12" sm="9">
             <v-row class="mb-6">
               <!-- CLAVE DE ELECTOR / CURP -->
-              <v-col cols="12" class="pb-0">
+              <!-- <v-col cols="12" class="pb-0">
                 <v-text-field
                   v-model="register.electoralKeyCurp"
                   label="Clave de Elector / CURP"
@@ -53,85 +53,8 @@
                   dense
                   required
                 ></v-text-field>
-              </v-col>
+              </v-col> -->
 
-              <!-- FECHA DE REGISTRO -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-menu
-                  ref="menuFechaRegistro"
-                  v-model="menuFechaRegistro"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      :value="computedDateFormatted"
-                      label="Fecha de registro"
-                      :rules="[rules.required]"
-                      prepend-inner-icon="mdi-calendar"
-                      readonly
-                      required
-                      outlined
-                      dense
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="register.dateRegister"
-                    @input="menuFechaRegistro = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-
-              <!-- Tipo de registro -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-select
-                  v-model="register.typeRegister"
-                  label="Tipo de registro"
-                  :items="['Afiliación', 'Ratificación']"
-                  dense
-                  outlined
-                ></v-select>
-              </v-col>
-
-              <!-- DISTRITO FEDERAL -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-select
-                  v-model="register.federalDistrict"
-                  label="Distrito Federal"
-                  :items="[1, 2]"
-                  prepend-inner-icon="mdi-pound"
-                  outlined
-                  dense
-                  required
-                ></v-select>
-              </v-col>
-
-              <!-- SECCION ELECTORAL -->
-              <v-col cols="6" sm="3" class="pb-0">
-                <v-text-field
-                  v-model="register.electoralSection"
-                  label="Sección Electoral"
-                  :rules="[rules.required]"
-                  @keypress="validateNumber($event, register.electoralSection, 4)"
-                  prepend-inner-icon="mdi-pound"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-            </v-row>
-
-            <!-- ///////////////////////////////////////////////////////////////////////////
-              ////////////////////////////////////////////////////////////////////////////////
-              ////////////////////////////////////////////////////////////////////////////////
-              ////////////////////// INFORMACION PERSONAL DEL REGISTRO /////////////////////// -->
-
-            <v-row class="mb-6">
               <!-- NOMBRE -->
               <v-col cols="12" sm="4" class="pb-0">
                 <v-text-field
@@ -171,6 +94,122 @@
                 ></v-text-field>
               </v-col>
 
+              <!-- FECHA DE REGISTRO -->
+              <v-col cols="6" sm="3" class="pb-0">
+                <v-menu
+                  ref="menuFechaRegistro"
+                  v-model="menuFechaRegistro"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      :value="textBirthdate"
+                      label="Cumpleaños"
+                      :rules="[rules.required]"
+                      prepend-inner-icon="mdi-calendar"
+                      readonly
+                      required
+                      outlined
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="register.birthdate"
+                    @input="selectBirthdate($event)"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+
+              <!-- Tipo de registro -->
+              <v-col cols="6" sm="3" class="pb-0">
+                <v-select
+                  v-model="register.typeRegister"
+                  label="Tipo de registro"
+                  :items="['Simpatizante', 'Afiliación', 'Ratificación']"
+                  dense
+                  outlined
+                ></v-select>
+              </v-col>
+
+              <!-- DISTRITO FEDERAL -->
+              <!-- <v-col cols="6" sm="3" class="pb-0">
+                <v-select
+                  v-model="register.federalDistrict"
+                  label="Distrito Federal"
+                  :items="[1, 2]"
+                  prepend-inner-icon="mdi-pound"
+                  outlined
+                  dense
+                  required
+                ></v-select>
+              </v-col> -->
+
+              <!-- SECCION ELECTORAL -->
+              <v-col cols="6" sm="3" class="pb-0">
+                <v-text-field
+                  v-model="register.electoralSection"
+                  label="Sección Electoral"
+                  :rules="[rules.required]"
+                  @keypress="validateNumber($event, register.electoralSection, 4)"
+                  prepend-inner-icon="mdi-pound"
+                  outlined
+                  dense
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <!-- TELEFONO CELULAR -->
+              <v-col cols="12" sm="3" class="pb-0">
+                <v-text-field
+                  v-model="register.phoneNumber"
+                  label="Teléfono/celular"
+                  prepend-inner-icon="mdi-phone"
+                  :rules="[rules.minLengthPhone]"
+                  @keypress="validateNumber($event, register.phoneNumber, 10)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col>
+
+              <!-- TELEFONO CASA -->
+              <!-- <v-col cols="12" sm="4" class="pb-0">
+                <v-text-field
+                  v-model="register.phoneNumber"
+                  label="Teléfono de casa"
+                  prepend-inner-icon="mdi-phone-classic"
+                  :rules="[rules.minLengthPhone]"
+                  @keypress="validateNumber($event, register.phoneNumber, 10)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col> -->
+
+              <!-- EMAIL -->
+              <!-- <v-col cols="12" sm="3" class="pb-0">
+                <v-text-field
+                  v-model="register.email"
+                  label="Correo electrónico"
+                  prepend-inner-icon="mdi-email"
+                  :rules="[rules.email]"
+                  @keypress="validateEmail($event, register.email, 30)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col> -->
+
+            </v-row>
+
+            <!-- ///////////////////////////////////////////////////////////////////////////
+              ////////////////////////////////////////////////////////////////////////////////
+              ////////////////////////////////////////////////////////////////////////////////
+              ////////////////////// INFORMACION PERSONAL DEL REGISTRO /////////////////////// -->
+
+            <v-row class="mb-6">
               <!-- CALLE -->
               <v-col cols="12" sm="8" class="pb-0">
                 <v-text-field
@@ -191,10 +230,8 @@
                   v-model="register.extnum"
                   label="No. Ext"
                   @keypress="validateNumberText($event, register.extnum, 6)"
-                  :rules="[rules.required]"
                   outlined
                   dense
-                  required
                 ></v-text-field>
               </v-col>
 
@@ -204,7 +241,30 @@
                   v-model="register.intnum"
                   label="No. Int"
                   @keypress="validateNumberText($event, register.intnum, 6)"
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col>
+
+              <!-- COLONIA -->
+              <v-col cols="6" sm="4" class="pb-0">
+                <v-text-field
+                  v-model="register.neighborhood"
+                  label="Colonia"
                   :rules="[rules.required]"
+                  outlined
+                  dense
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <!-- CP -->
+              <v-col cols="6" sm="2" class="pb-0">
+                <v-text-field
+                  v-model="register.cp"
+                  label="C.P."
+                  :rules="[rules.required]"
+                  @keypress="validateNumber($event, register.cp, 5)"
                   outlined
                   dense
                   required
@@ -237,31 +297,6 @@
                 ></v-combobox>
               </v-col>
 
-              <!-- COLONIA -->
-              <v-col cols="6" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.neighborhood"
-                  label="Colonia"
-                  :rules="[rules.required]"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <!-- CP -->
-              <v-col cols="6" sm="2" class="pb-0">
-                <v-text-field
-                  v-model="register.cp"
-                  label="C.P."
-                  :rules="[rules.required]"
-                  @keypress="validateNumber($event, register.cp, 5)"
-                  outlined
-                  dense
-                  required
-                ></v-text-field>
-              </v-col>
-
             </v-row>
 
             <!-- ///////////////////////////////////////////////////////////////////////////
@@ -269,46 +304,33 @@
             ////////////////////////////////////////////////////////////////////////////////
             ////////////////////// INFORMACION DE CONTACTO ///////////////////////////////// -->
 
-            <v-row>
-              <!-- TELEFONO CELULAR -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.cellPhoneNumber"
-                  label="Teléfono celular"
-                  prepend-inner-icon="mdi-phone"
-                  :rules="[rules.minLengthPhone]"
-                  @keypress="validateNumber($event, register.cellPhoneNumber, 10)"
-                  outlined
+            <v-row v-for="(item, index) of register.requests" :key="`requests-${index}`">
+              <v-col cols="3" class="pb-0">
+                <v-select
+                  v-model="register.requests[index].type"
+                  label="Tipo"
+                  :items="requestTypes"
                   dense
-                ></v-text-field>
-              </v-col>
-
-              <!-- TELEFONO CASA -->
-              <v-col cols="12" sm="4" class="pb-0">
-                <v-text-field
-                  v-model="register.phoneNumber"
-                  label="Teléfono de casa"
-                  prepend-inner-icon="mdi-phone-classic"
-                  :rules="[rules.minLengthPhone]"
-                  @keypress="validateNumber($event, register.phoneNumber, 10)"
                   outlined
-                  dense
-                ></v-text-field>
+                ></v-select>
               </v-col>
-
-              <!-- EMAIL -->
-              <v-col cols="12" sm="4" class="pb-0">
+              <v-col cols="9" class="pb-0">
                 <v-text-field
-                  v-model="register.email"
-                  label="Correo electrónico"
-                  prepend-inner-icon="mdi-email"
-                  :rules="[rules.email]"
-                  @keypress="validateEmail($event, register.email, 30)"
+                  v-model="register.requests[index].value"
+                  label="Observaciones"
                   outlined
                   dense
                 ></v-text-field>
               </v-col>
             </v-row>
+            <div class="d-flex gap-5">
+              <v-btn fab dark small color="primary" @click="addNewRequest()">
+                <v-icon> mdi-plus </v-icon>
+              </v-btn>
+              <v-btn fab dark small color="error" v-if="register.requests.length > 1" @click="removeLastRequest()">
+                <v-icon> mdi-minus </v-icon>
+              </v-btn>
+            </div>
           </v-col>
         </v-row>
 
@@ -355,6 +377,7 @@
 import { validateNumber, validateText, validateNumberText, validateEmail } from "@/utils//keyPressValidate";
 import AffiliatesDeleteDialogComp from "@/components/affiliates_view/AffiliatesDeleteDialogComp";
 import AffiliatesServices from '@/services/AffiliatesServices';
+import { RequestTypes, RequestTypesArray } from "@/constants/AffiliatesSortOptions";
 import UserServices from '@/services/UserServices';
 import { municipiosList } from '@/constants/MunicipiosList';
 import { LaPazTownshipTowns } from '@/constants/towns/LaPazTownshipTowns';
@@ -376,7 +399,9 @@ export default {
       exit: false,
       showEffect: false,
       menuFechaRegistro: false,
+      textBirthdate: '',
       townships: municipiosList,
+      requestTypes: RequestTypesArray,
       towns: [],
       validForm: false,
       loading: false,
@@ -388,7 +413,9 @@ export default {
         minLengthPhone : (v) => (v && v.length == 10 || v == '') || "Debe contener 10 dígitos",
         email: (v) => (/.+@.+\..+/.test(v) || v == '') || "Email no válido",
       },
-      register: {},
+      register: {
+        birthdate: new Date().toISOString().substr(0, 10),
+      },
       userCreator: {},
       userModifier: {},
     }
@@ -408,9 +435,10 @@ export default {
     this.register = JSON.parse(JSON.stringify(this.updateRegister));
 
     // Initialize the register fields correctly
-    this.register.dateRegister = new Date(this.register.dateRegister || Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)
     this.register.phoneNumber = this.register.phoneNumber?.toString() || "";
-    this.register.cellPhoneNumber = this.register.cellPhoneNumber?.toString() || "";
+    this.register.birthdate = this.register.birthdate ? new Date(this.register.birthdate).toISOString().substr(0, 10) : new Date(1980, 0, 1).toISOString().substr(0, 10);
+    this.register.requests = this.register.requests.length === 0 ? [{ type: "Urbanismo", value: "" }] : this.register.requests;
+    this.textBirthdate = this.formatDate(this.register.birthdate);
 
     // Get the user creator and modifier
     this.userCreator = await this.getUser(this.register.createdBy);
@@ -426,7 +454,7 @@ export default {
   },
   computed: {
     computedDateFormatted() {
-      return this.formatDate(this.register.dateRegister);
+      return this.formatDate(this.register.birthdate);
     },
     showProp: {
       get() {
@@ -449,6 +477,7 @@ export default {
       this.loading = true;
       const delay = ms => new Promise(res => setTimeout(res, ms));
       await delay(1000);
+      this.clearEmptyRequests();
       const response = await AffiliatesServices.updateAffiliate(this.register)
       if(response) {
         if(response.status === 200) {
@@ -518,6 +547,24 @@ export default {
         default:
           this.towns = [];
       }
+    },
+
+    addNewRequest() {
+      this.register.requests.push({ type: RequestTypes.Urbanismo, value: "" });
+    },
+
+    removeLastRequest() {
+      this.register.requests.pop();
+    },
+
+    clearEmptyRequests() {
+      this.register.requests = this.register.requests.filter(request => request.value !== "");
+    },
+
+    selectBirthdate(event) {
+      this.register.birthdate = event;
+      this.textBirthdate = this.formatDate(event);
+      this.menuFechaRegistro = false;
     },
 
     formatDate(date) {

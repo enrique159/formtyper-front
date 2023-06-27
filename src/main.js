@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueMeta from 'vue-meta'
+import VueApexCharts from 'vue-apexcharts'
 import './registerServiceWorker'
 
 
@@ -17,6 +18,9 @@ axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL;
 
 Vue.use(VueAxios, axios)
 Vue.use(VueMeta)
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 new Vue({
   router,

@@ -27,7 +27,7 @@
           <v-icon>mdi-plus</v-icon>
           Nuevo usuario
         </v-btn>
-        <v-btn class="d-sm-none d-flex" fab small color="primary" v-if="user.usertype == 'admin'">
+        <v-btn class="d-sm-none d-flex" fab small color="primary" v-if="user.usertype == 'admin'" @click="$router.push('/users/new')">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </div>

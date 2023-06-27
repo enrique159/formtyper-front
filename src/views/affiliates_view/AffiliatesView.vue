@@ -19,26 +19,6 @@
         v-on:updateRegister="updateRegister = $event"
       />
     </v-container>
-
-    <v-container>
-      <v-row>
-        <v-col cols="12" sm="4" class="pa-8">
-          <div class="action-card">
-            <h4>Exportar información</h4>
-          </div>
-        </v-col>
-        <v-col cols="12" sm="4" class="pa-8">
-          <div class="action-card">
-            <h4>Exportar información</h4>
-          </div>
-        </v-col>
-        <v-col cols="12" sm="4" class="pa-8">
-          <div class="action-card">
-            <h4>Exportar información</h4>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
     <AffiliatesEditComp v-if="showEdit" :show="showEdit" :updateRegister="updateRegister" v-on:updateShow="showEdit = $event"/>
   </div>
 </template>
@@ -87,14 +67,5 @@ export default {
   width: 100%;
   max-height: 100%;
   overflow-y: auto;
-}
-
-.action-card {
-  width: 100%;
-  height: fit-content;
-  padding: 2rem;
-  background-color: #ececec;
-  border-radius: 1rem;
-  text-align: center;
 }
 </style>

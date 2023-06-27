@@ -39,7 +39,7 @@ export default {
   height: 128px;
   box-shadow: var(--bs-normal);
   color: var(--color-white) !important;
-  transition: var(--transition-normal);
+  transition: var(--transition-rapida);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -47,7 +47,6 @@ export default {
   cursor: pointer;
   i { color: rgb(255, 255, 255) !important; }
   &:hover {
-    transform: scale(0.98);
     box-shadow: var(--bs-dark);
   }
 }
