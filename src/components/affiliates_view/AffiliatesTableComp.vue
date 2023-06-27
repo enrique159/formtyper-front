@@ -132,7 +132,7 @@
                 <p class="ts-small ma-0">Exporta los registros de la tabla a una hoja de cálculo de Excel.</p>
               </v-col>
               <v-col cols="4">
-                <v-btn color="#123123" @click="generateExcel()">
+                <v-btn color="#123123" @click="generateExcel()" :loading="loadingExcel">
                   <span class="tc-white">Exportar</span>
                   <v-icon color="green darken-2 pl-6"> mdi-table-arrow-right </v-icon>
                 </v-btn>
@@ -185,6 +185,7 @@ export default {
       errorText: '',
       snackbar: false,
       loading: false,
+      loadingExcel: false,
       typingTimer: null,
       doneTypingInterval: 1000,
 
@@ -302,6 +303,20 @@ export default {
       this.loading = false;
     },
 
+    async getAllAffiliates() {
+      this.loadingExcel = true;
+      const response = await AffiliatesServices.getAllAffiliates(this.search);
+      if(response) {
+        if(response.status === 200) {
+          return response.data;
+        } else {
+          errorGetAffiliates(response.data);
+        }
+      } else showSnackbar('No es posible conectar al servidor', 'red')
+      this.loadingExcel = false;
+      return [];
+    },
+
     // METODO PARA ABRIR Y EDITAR AFILIADO
     handleClick(item) {
       this.updateRegisterProp = item;
@@ -352,8 +367,9 @@ export default {
     },
 
     // GENERAR EXPORTACION DE EXCEL
-    generateExcel() {
-      const data = this.items;
+    async generateExcel() {
+      const data = await this.getAllAffiliates();
+      if (data.length == 0) return 
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Afiliados");

@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.4.2",
+    "date": "Martes 27 de Junio de 2023",
+    "description": "Se agregó la opcion de poder exportar a Excel todos los registros.",
+    "details": [
+      "Exportar a Excel (xlsx) en la tabla de Afiliados"
+    ],
+    "minorDetails": [
+      "Se agregó la opción de exportar a Excel (xlsx) en la tabla de Afiliados, pero aún no está completo."
+    ]
+  },
+  {
     "version": "1.4.1",
     "date": "Lunes 26 de Junio de 2023",
     "description": "Cambios en el formulario para crear un nuevo afiliado. Se agregó el campo de fecha de nacimiento y se agregó la gestión social.",

@@ -7,6 +7,12 @@ export default {
       .catch(error => error.response);
   },
 
+  getAllAffiliates(search = '') {
+    return axios.get('/affiliates/getAllAffiliates?search=' + search)
+      .then(response => response)
+      .catch(error => error.response);
+  },
+
   createAffiliate(affiliate) {
     return axios.post('/affiliates/create', affiliate)
       .then(response => response)
