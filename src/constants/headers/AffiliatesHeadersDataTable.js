@@ -1,10 +1,9 @@
 export const CompactAffiliatesHeader = [
   { text: "Nombre", value: "fullname" },
-  { text: "Email", value: "email" },
   { text: "Teléfono", value: "phoneNumber" },
+  { text: "Ciudad", value: "city" },
+  { text: "Sección", value: "electoralSection" },
   { text: "Creado", value: "createdAt" },
-  { text: "Actualizado", value: "updatedAt" },
-
 ]
 
 export const AddressAffiliatesHeader = [
@@ -22,7 +21,6 @@ export const FullAffiliatesHeader = [
   { text: "Nombre", value: "name" },
   { text: "Apellido Paterno", value: "fatherSurname" },
   { text: "Apellido Materno", value: "motherSurname" },
-  { text: "Email", value: "email" },
   { text: "Teléfono", value: "phoneNumber" },
   { text: "Cumpleaños", value: "birthdate" },
   { text: "Dirección", value: "street" },
